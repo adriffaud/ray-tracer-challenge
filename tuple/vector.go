@@ -8,6 +8,11 @@ func NewVector(x, y, z float32) *Vector {
 	return &Vector{XVal: x, YVal: y, ZVal: z}
 }
 
+// NewZeroVector creates a new zeroed Vector instance
+func NewZeroVector() *Vector {
+	return &Vector{XVal: 0, YVal: 0, ZVal: 0}
+}
+
 // X returns the x-coordinate of the Vector
 func (v *Vector) X() float32 {
 	return v.XVal

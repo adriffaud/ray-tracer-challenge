@@ -60,7 +60,7 @@ func TestTupleAddition(t *testing.T) {
 
 	actual, err := Add(point, vector)
 	if err != nil {
-		t.Fatal("Expected no error.")
+		t.Fatal("expected no error.")
 	}
 
 	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
@@ -68,7 +68,7 @@ func TestTupleAddition(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
+		t.Fatalf("expected a Point{1, 1, 6}. got=%v", actual)
 	}
 }
 
@@ -79,7 +79,7 @@ func TestVectorAddition(t *testing.T) {
 
 	actual, err := Add(vector1, vector2)
 	if err != nil {
-		t.Fatal("Expected no error.")
+		t.Fatal("expected no error.")
 	}
 
 	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
@@ -87,7 +87,7 @@ func TestVectorAddition(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
+		t.Fatalf("expected a Point{1, 1, 6}. got=%v", actual)
 	}
 }
 
@@ -97,7 +97,7 @@ func TestPointAddition(t *testing.T) {
 
 	_, err := Add(point1, point2)
 	if err == nil {
-		t.Fatal("Expected an error.")
+		t.Fatal("expected an error.")
 	}
 }
 
@@ -108,7 +108,7 @@ func TestPointSubtraction(t *testing.T) {
 
 	actual, err := Sub(point1, point2)
 	if err != nil {
-		t.Fatal("Expected no error.")
+		t.Fatal("expected no error.")
 	}
 
 	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
@@ -116,7 +116,7 @@ func TestPointSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("Expected a Vector{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected a Vector{-2, -4, -6}. got=%v", actual)
 	}
 }
 
@@ -135,7 +135,7 @@ func TestVectorFromPointSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("Expected a Point{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected a Point{-2, -4, -6}. got=%v", actual)
 	}
 }
 
@@ -146,7 +146,7 @@ func TestVectorSubtraction(t *testing.T) {
 
 	actual, err := Sub(vector1, vector2)
 	if err != nil {
-		t.Fatal("Expected no error.")
+		t.Fatal("expected no error.")
 	}
 
 	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
@@ -154,7 +154,7 @@ func TestVectorSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("Expected a Vector{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected a Vector{-2, -4, -6}. got=%v", actual)
 	}
 }
 
@@ -164,6 +164,61 @@ func TestPointFromVectorSubtraction(t *testing.T) {
 
 	_, err := Sub(vector, point)
 	if err == nil {
-		t.Fatal("Expected an error.")
+		t.Fatal("expected an error.")
+	}
+}
+
+func TestTupleNegationWithSub(t *testing.T) {
+	zero := NewZeroVector()
+	vector := NewVector(1, -2, 3)
+	expected := NewVector(-1, 2, -3)
+
+	actual, err := Sub(zero, vector)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected a Vector{-1, 2, -3}. got=%v", actual)
+	}
+}
+
+func TestVectorNegation(t *testing.T) {
+	vector := NewVector(1, -2, 3)
+	expected := NewVector(-1, 2, -3)
+
+	actual, err := Negate(vector)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected a Vector{-1, 2, -3}. got=%v", actual)
+	}
+}
+
+func TestPointNegation(t *testing.T) {
+	point := NewPoint(1, -2, 3)
+	expected := NewPoint(-1, 2, -3)
+
+	actual, err := Negate(point)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected a Point{-1, 2, -3}. got=%v", actual)
 	}
 }
