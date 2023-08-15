@@ -52,3 +52,18 @@ func TestTupleIsVector(t *testing.T) {
 		t.Fatalf("w is not 0.0. got=%f", a.W())
 	}
 }
+
+func TestTupleAddition(t *testing.T) {
+	point := NewPoint(3, -2, 5)
+	vector := NewVector(-2, 3, 1)
+	expected := NewPoint(1, 1, 6)
+
+	actual, err := Add(point, vector)
+	if err != nil {
+		t.Fatal("Expected no error.")
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
+	}
+}
