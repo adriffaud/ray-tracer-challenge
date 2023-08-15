@@ -96,6 +96,11 @@ func Divide(t Tuple, s float64) (Tuple, error) {
 	}
 }
 
-func Magnitude(t Vector) float64 {
-	return math.Sqrt(t.XVal*t.XVal + t.YVal*t.YVal + t.ZVal*t.ZVal)
+func Magnitude(v Vector) float64 {
+	return math.Sqrt(v.XVal*v.XVal + v.YVal*v.YVal + v.ZVal*v.ZVal)
+}
+
+func Normalize(v Vector) Vector {
+	magnitude := Magnitude(v)
+	return *NewVector(v.XVal/magnitude, v.YVal/magnitude, v.ZVal/magnitude)
 }

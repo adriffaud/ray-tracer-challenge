@@ -349,3 +349,28 @@ func TestVectorMagnitude(t *testing.T) {
 		}
 	}
 }
+
+func TestVectorNormalization(t *testing.T) {
+	vectors := map[Vector]Vector{
+		*NewVector(4, 0, 0): *NewVector(1, 0, 0),
+		*NewVector(1, 2, 3): *NewVector(1/math.Sqrt(14), 2/math.Sqrt(14), 3/math.Sqrt(14)),
+	}
+
+	for v, expected := range vectors {
+		actual := Normalize(v)
+
+		if !reflect.DeepEqual(actual, expected) {
+			t.Fatalf("expected %+v. got=%+v", expected, actual)
+		}
+	}
+}
+
+func TestNormalizedVectorMagnitude(t *testing.T) {
+	vector := NewVector(1, 2, 3)
+	normalized := Normalize(*vector)
+
+	actual := Magnitude(normalized)
+	if actual != 1 {
+		t.Fatalf("expected 1. got=%+v", actual)
+	}
+}
