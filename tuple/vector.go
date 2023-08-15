@@ -1,10 +1,10 @@
 package tuple
 
 // Vector is a struct representing a 3D vector
-type Vector struct{ XVal, YVal, ZVal float32 }
+type Vector struct{ XVal, YVal, ZVal float64 }
 
 // NewVector creates a new Vector instance
-func NewVector(x, y, z float32) *Vector {
+func NewVector(x, y, z float64) *Vector {
 	return &Vector{XVal: x, YVal: y, ZVal: z}
 }
 
@@ -14,21 +14,21 @@ func NewZeroVector() *Vector {
 }
 
 // X returns the x-coordinate of the Vector
-func (v *Vector) X() float32 {
+func (v *Vector) X() float64 {
 	return v.XVal
 }
 
 // Y returns the y-coordinate of the Vector
-func (v *Vector) Y() float32 {
+func (v *Vector) Y() float64 {
 	return v.YVal
 }
 
 // Z returns the z-coordinate of the Vector
-func (v *Vector) Z() float32 {
+func (v *Vector) Z() float64 {
 	return v.ZVal
 }
 
 // W returns the w-coordinate of the Vector
-func (v *Vector) W() float32 {
+func (v *Vector) W() float64 {
 	return 0.0
 }

@@ -1,29 +1,29 @@
 package tuple
 
 // Point is a struct representing a 3D point
-type Point struct{ XVal, YVal, ZVal float32 }
+type Point struct{ XVal, YVal, ZVal float64 }
 
 // NewPoint creates a new Point instance
-func NewPoint(x, y, z float32) *Point {
+func NewPoint(x, y, z float64) *Point {
 	return &Point{XVal: x, YVal: y, ZVal: z}
 }
 
 // X returns the x-coordinate of the Point
-func (p *Point) X() float32 {
+func (p *Point) X() float64 {
 	return p.XVal
 }
 
 // Y returns the y-coordinate of the Point
-func (p *Point) Y() float32 {
+func (p *Point) Y() float64 {
 	return p.YVal
 }
 
 // Z returns the z-coordinate of the Point
-func (p *Point) Z() float32 {
+func (p *Point) Z() float64 {
 	return p.ZVal
 }
 
 // W returns the w-coordinate of the Point
-func (p *Point) W() float32 {
+func (p *Point) W() float64 {
 	return 1.0
 }

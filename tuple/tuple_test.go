@@ -1,6 +1,7 @@
 package tuple
 
 import (
+	"math"
 	"reflect"
 	"testing"
 )
@@ -328,5 +329,23 @@ func TestPointScalarDivision(t *testing.T) {
 
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestVectorMagnitude(t *testing.T) {
+	vectors := map[Vector]float64{
+		*NewVector(1, 0, 0):    1,
+		*NewVector(0, 1, 0):    1,
+		*NewVector(0, 0, 1):    1,
+		*NewVector(1, 2, 3):    math.Sqrt(14),
+		*NewVector(-1, -2, -3): math.Sqrt(14),
+	}
+
+	for v, mag := range vectors {
+		actual := Magnitude(v)
+
+		if !reflect.DeepEqual(actual, mag) {
+			t.Fatalf("expected %+v. got=%+v", mag, actual)
+		}
 	}
 }

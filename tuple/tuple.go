@@ -1,12 +1,15 @@
 package tuple
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 type Tuple interface {
-	X() float32
-	Y() float32
-	Z() float32
-	W() float32
+	X() float64
+	Y() float64
+	Z() float64
+	W() float64
 }
 
 type Negatable interface {
@@ -63,7 +66,7 @@ func Negate(t Tuple) (Tuple, error) {
 	}
 }
 
-func Multiply(t Tuple, s float32) (Tuple, error) {
+func Multiply(t Tuple, s float64) (Tuple, error) {
 	x := t.X() * s
 	y := t.Y() * s
 	z := t.Z() * s
@@ -78,7 +81,7 @@ func Multiply(t Tuple, s float32) (Tuple, error) {
 	}
 }
 
-func Divide(t Tuple, s float32) (Tuple, error) {
+func Divide(t Tuple, s float64) (Tuple, error) {
 	x := t.X() / s
 	y := t.Y() / s
 	z := t.Z() / s
@@ -91,4 +94,8 @@ func Divide(t Tuple, s float32) (Tuple, error) {
 	default:
 		return nil, errors.New("operation not allowed")
 	}
+}
+
+func Magnitude(t Vector) float64 {
+	return math.Sqrt(t.XVal*t.XVal + t.YVal*t.YVal + t.ZVal*t.ZVal)
 }
