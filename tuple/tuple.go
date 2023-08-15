@@ -96,15 +96,23 @@ func Divide(t Tuple, s float64) (Tuple, error) {
 	}
 }
 
-func Magnitude(v Tuple) float64 {
-	return math.Sqrt(v.X()*v.X() + v.Y()*v.Y() + v.Z()*v.Z())
+func Magnitude(t Tuple) float64 {
+	return math.Sqrt(t.X()*t.X() + t.Y()*t.Y() + t.Z()*t.Z())
 }
 
-func Normalize(v Tuple) Vector {
-	magnitude := Magnitude(v)
-	return *NewVector(v.X()/magnitude, v.Y()/magnitude, v.Z()/magnitude)
+func Normalize(t Tuple) Vector {
+	magnitude := Magnitude(t)
+	return *NewVector(t.X()/magnitude, t.Y()/magnitude, t.Z()/magnitude)
 }
 
 func Dot(v1, v2 Tuple) float64 {
 	return v1.X()*v2.X() + v1.Y()*v2.Y() + v1.Z()*v2.Z()
+}
+
+func Cross(v1, v2 Tuple) Tuple {
+	x := v1.Y()*v2.Z() - v1.Z()*v2.Y()
+	y := v1.Z()*v2.X() - v1.X()*v2.Z()
+	z := v1.X()*v2.Y() - v1.Y()*v2.X()
+
+	return NewVector(x, y, z)
 }

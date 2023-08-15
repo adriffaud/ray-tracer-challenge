@@ -384,3 +384,20 @@ func TestTupleDotProduct(t *testing.T) {
 		t.Fatalf("expected 20. got=%f", actual)
 	}
 }
+
+func TestTupleCrossProduct(t *testing.T) {
+	vector1 := NewVector(1, 2, 3)
+	vector2 := NewVector(2, 3, 4)
+	expected1 := NewVector(-1, 2, -1)
+	expected2 := NewVector(1, -2, 1)
+
+	actual1 := Cross(vector1, vector2)
+	if !reflect.DeepEqual(actual1, expected1) {
+		t.Fatalf("expected %+v. got=%+v", expected1, actual1)
+	}
+
+	actual2 := Cross(vector2, vector1)
+	if !reflect.DeepEqual(actual2, expected2) {
+		t.Fatalf("expected %+v. got=%+v", expected2, actual2)
+	}
+}
