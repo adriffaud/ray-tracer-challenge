@@ -1,6 +1,9 @@
 package color
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestColorRGBTuples(t *testing.T) {
 	c := NewColor(-0.5, 0.4, 1.7)
@@ -15,5 +18,16 @@ func TestColorRGBTuples(t *testing.T) {
 
 	if c.Blue != 1.7 {
 		t.Fatalf("expected 1.7. got=%f", c.Blue)
+	}
+}
+
+func TestColorAddition(t *testing.T) {
+	c1 := NewColor(0.9, 0.6, 0.75)
+	c2 := NewColor(0.7, 0.1, 0.25)
+	expected := NewColor(1.6, 0.7, 1.0)
+
+	actual := Add(c1, c2)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", actual, expected)
 	}
 }
