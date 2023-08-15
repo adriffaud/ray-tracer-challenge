@@ -7,6 +7,18 @@ import (
 	"github.com/adriffaud/ray-tracer-challenge/float"
 )
 
+func assertEquals(t *testing.T, c1, c2 Color) {
+	if !float.ApproxEq(c1.Red, c2.Red) {
+		t.Fatalf("expected %+v. got=%+v", c1, c2)
+	}
+	if !float.ApproxEq(c1.Green, c2.Green) {
+		t.Fatalf("expected %+v. got=%+v", c1, c2)
+	}
+	if !float.ApproxEq(c1.Blue, c2.Blue) {
+		t.Fatalf("expected %+v. got=%+v", c1, c2)
+	}
+}
+
 func TestColorRGBTuples(t *testing.T) {
 	c := NewColor(-0.5, 0.4, 1.7)
 
@@ -40,13 +52,22 @@ func TestColorSubtraction(t *testing.T) {
 	expected := NewColor(0.2, 0.5, 0.5)
 
 	actual := Sub(c1, c2)
-	if !float.ApproxEq(actual.Red, expected.Red) {
-		t.Fatalf("expected %+v. got=%+v", actual, expected)
-	}
-	if !float.ApproxEq(actual.Green, expected.Green) {
-		t.Fatalf("expected %+v. got=%+v", actual, expected)
-	}
-	if !float.ApproxEq(actual.Blue, expected.Blue) {
-		t.Fatalf("expected %+v. got=%+v", actual, expected)
-	}
+	assertEquals(t, *actual, *expected)
+}
+
+func TestColorScalarMultiplication(t *testing.T) {
+	c := NewColor(0.2, 0.3, 0.4)
+	expected := NewColor(0.4, 0.6, 0.8)
+
+	actual := MultiplyByScalar(c, 2)
+	assertEquals(t, *actual, *expected)
+}
+
+func TestColorMultiplication(t *testing.T) {
+	c1 := NewColor(1, 0.2, 0.4)
+	c2 := NewColor(0.9, 1, 0.1)
+	expected := NewColor(0.9, 0.2, 0.04)
+
+	actual := Multiply(c1, c2)
+	assertEquals(t, *actual, *expected)
 }
