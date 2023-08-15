@@ -1,7 +1,5 @@
 BINARY_NAME = raytracer
 
-SRC_FILES := $(shell find . -name '*.go')
-
 .PHONY: all
 all: test
 
@@ -11,7 +9,7 @@ build:
 
 .PHONY: test
 test:
-	go test -v ./...
+	go test ./...
 
 .PHONY: watch
 watch:
@@ -20,5 +18,5 @@ watch:
 	@while true; do \
 		clear; \
 		${MAKE} test --no-print-directory; \
-		inotifywait -qre close_write $(SRC_FILES); \
+		inotifywait -qre close_write .; \
 	done
