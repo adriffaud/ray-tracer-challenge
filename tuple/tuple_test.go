@@ -342,7 +342,7 @@ func TestVectorMagnitude(t *testing.T) {
 	}
 
 	for v, mag := range vectors {
-		actual := Magnitude(v)
+		actual := Magnitude(&v)
 
 		if !reflect.DeepEqual(actual, mag) {
 			t.Fatalf("expected %+v. got=%+v", mag, actual)
@@ -357,7 +357,7 @@ func TestVectorNormalization(t *testing.T) {
 	}
 
 	for v, expected := range vectors {
-		actual := Normalize(v)
+		actual := Normalize(&v)
 
 		if !reflect.DeepEqual(actual, expected) {
 			t.Fatalf("expected %+v. got=%+v", expected, actual)
@@ -367,10 +367,20 @@ func TestVectorNormalization(t *testing.T) {
 
 func TestNormalizedVectorMagnitude(t *testing.T) {
 	vector := NewVector(1, 2, 3)
-	normalized := Normalize(*vector)
+	normalized := Normalize(vector)
 
-	actual := Magnitude(normalized)
+	actual := Magnitude(&normalized)
 	if actual != 1 {
 		t.Fatalf("expected 1. got=%+v", actual)
+	}
+}
+
+func TestTupleDotProduct(t *testing.T) {
+	vector1 := NewVector(1, 2, 3)
+	vector2 := NewVector(2, 3, 4)
+
+	actual := Dot(vector1, vector2)
+	if actual != 20 {
+		t.Fatalf("expected 20. got=%f", actual)
 	}
 }
