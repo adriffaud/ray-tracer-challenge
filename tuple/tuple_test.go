@@ -67,3 +67,28 @@ func TestTupleAddition(t *testing.T) {
 		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
 	}
 }
+
+func TestVectorAddition(t *testing.T) {
+	vector1 := NewVector(3, -2, 5)
+	vector2 := NewVector(-2, 3, 1)
+	expected := NewVector(1, 1, 6)
+
+	actual, err := Add(vector1, vector2)
+	if err != nil {
+		t.Fatal("Expected no error.")
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
+	}
+}
+
+func TestPointAddition(t *testing.T) {
+	point := NewPoint(3, -2, 5)
+	vector := NewPoint(-2, 3, 1)
+
+	_, err := Add(point, vector)
+	if err == nil {
+		t.Fatal("Expected an error.")
+	}
+}
