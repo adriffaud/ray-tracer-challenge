@@ -63,6 +63,10 @@ func TestTupleAddition(t *testing.T) {
 		t.Fatal("Expected no error.")
 	}
 
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
 	}
@@ -78,16 +82,87 @@ func TestVectorAddition(t *testing.T) {
 		t.Fatal("Expected no error.")
 	}
 
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("Expected a Point{1, 1, 6}. got=%v", actual)
 	}
 }
 
 func TestPointAddition(t *testing.T) {
-	point := NewPoint(3, -2, 5)
-	vector := NewPoint(-2, 3, 1)
+	point1 := NewPoint(3, -2, 5)
+	point2 := NewPoint(-2, 3, 1)
 
-	_, err := Add(point, vector)
+	_, err := Add(point1, point2)
+	if err == nil {
+		t.Fatal("Expected an error.")
+	}
+}
+
+func TestPointSubtraction(t *testing.T) {
+	point1 := NewPoint(3, 2, 1)
+	point2 := NewPoint(5, 6, 7)
+	expected := NewVector(-2, -4, -6)
+
+	actual, err := Sub(point1, point2)
+	if err != nil {
+		t.Fatal("Expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected a Vector{-2, -4, -6}. got=%v", actual)
+	}
+}
+
+func TestVectorFromPointSubtraction(t *testing.T) {
+	point := NewPoint(3, 2, 1)
+	vector := NewVector(5, 6, 7)
+	expected := NewPoint(-2, -4, -6)
+
+	actual, err := Sub(point, vector)
+	if err != nil {
+		t.Fatal("Expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected a Point{-2, -4, -6}. got=%v", actual)
+	}
+}
+
+func TestVectorSubtraction(t *testing.T) {
+	vector1 := NewVector(3, 2, 1)
+	vector2 := NewVector(5, 6, 7)
+	expected := NewVector(-2, -4, -6)
+
+	actual, err := Sub(vector1, vector2)
+	if err != nil {
+		t.Fatal("Expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected a Vector{-2, -4, -6}. got=%v", actual)
+	}
+}
+
+func TestPointFromVectorSubtraction(t *testing.T) {
+	vector := NewVector(3, 2, 1)
+	point := NewPoint(5, 6, 7)
+
+	_, err := Sub(vector, point)
 	if err == nil {
 		t.Fatal("Expected an error.")
 	}
