@@ -3,6 +3,8 @@ package color
 import (
 	"reflect"
 	"testing"
+
+	"github.com/adriffaud/ray-tracer-challenge/float"
 )
 
 func TestColorRGBTuples(t *testing.T) {
@@ -28,6 +30,23 @@ func TestColorAddition(t *testing.T) {
 
 	actual := Add(c1, c2)
 	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", actual, expected)
+	}
+}
+
+func TestColorSubtraction(t *testing.T) {
+	c1 := NewColor(0.9, 0.6, 0.75)
+	c2 := NewColor(0.7, 0.1, 0.25)
+	expected := NewColor(0.2, 0.5, 0.5)
+
+	actual := Sub(c1, c2)
+	if !float.ApproxEq(actual.Red, expected.Red) {
+		t.Fatalf("expected %+v. got=%+v", actual, expected)
+	}
+	if !float.ApproxEq(actual.Green, expected.Green) {
+		t.Fatalf("expected %+v. got=%+v", actual, expected)
+	}
+	if !float.ApproxEq(actual.Blue, expected.Blue) {
 		t.Fatalf("expected %+v. got=%+v", actual, expected)
 	}
 }
