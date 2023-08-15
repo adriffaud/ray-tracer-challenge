@@ -62,3 +62,33 @@ func Negate(t Tuple) (Tuple, error) {
 		return nil, errors.New("operation not allowed")
 	}
 }
+
+func Multiply(t Tuple, s float32) (Tuple, error) {
+	x := t.X() * s
+	y := t.Y() * s
+	z := t.Z() * s
+
+	switch t.W() {
+	case 0:
+		return NewVector(x, y, z), nil
+	case 1:
+		return NewPoint(x, y, z), nil
+	default:
+		return nil, errors.New("operation not allowed")
+	}
+}
+
+func Divide(t Tuple, s float32) (Tuple, error) {
+	x := t.X() / s
+	y := t.Y() / s
+	z := t.Z() / s
+
+	switch t.W() {
+	case 0:
+		return NewVector(x, y, z), nil
+	case 1:
+		return NewPoint(x, y, z), nil
+	default:
+		return nil, errors.New("operation not allowed")
+	}
+}

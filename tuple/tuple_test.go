@@ -68,7 +68,7 @@ func TestTupleAddition(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Point{1, 1, 6}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -87,7 +87,7 @@ func TestVectorAddition(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Point{1, 1, 6}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -116,7 +116,7 @@ func TestPointSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Vector{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -135,7 +135,7 @@ func TestVectorFromPointSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Point{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -154,7 +154,7 @@ func TestVectorSubtraction(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Vector{-2, -4, -6}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -183,7 +183,7 @@ func TestTupleNegationWithSub(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Vector{-1, 2, -3}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -201,7 +201,7 @@ func TestVectorNegation(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Vector{-1, 2, -3}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -219,6 +219,114 @@ func TestPointNegation(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected a Point{-1, 2, -3}. got=%v", actual)
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestVectorScalarMultiplication(t *testing.T) {
+	vector := NewVector(1, -2, 3)
+	expected := NewVector(3.5, -7, 10.5)
+
+	actual, err := Multiply(vector, 3.5)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestPointScalarMultiplication(t *testing.T) {
+	point := NewPoint(1, -2, 3)
+	expected := NewPoint(3.5, -7, 10.5)
+
+	actual, err := Multiply(point, 3.5)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestVectorFractionMultiplication(t *testing.T) {
+	vector := NewVector(1, -2, 3)
+	expected := NewVector(0.5, -1, 1.5)
+
+	actual, err := Multiply(vector, 0.5)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestPointFractionMultiplication(t *testing.T) {
+	point := NewPoint(1, -2, 3)
+	expected := NewPoint(0.5, -1, 1.5)
+
+	actual, err := Multiply(point, 0.5)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestVectorScalarDivision(t *testing.T) {
+	vector := NewVector(1, -2, 3)
+	expected := NewVector(0.5, -1, 1.5)
+
+	actual, err := Divide(vector, 2)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Vector{}) {
+		t.Fatalf("result is not a Vector. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestPointScalarDivision(t *testing.T) {
+	point := NewPoint(1, -2, 3)
+	expected := NewPoint(0.5, -1, 1.5)
+
+	actual, err := Divide(point, 2)
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("result is not a Point. got=%T", actual)
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
