@@ -1,9 +1,10 @@
 package matrix
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
 
 func Test4x4MatrixConstruction(t *testing.T) {
@@ -45,8 +46,6 @@ func Test2x2MatrixCreation(t *testing.T) {
 		{1, 1}: -2,
 	}
 
-	fmt.Printf("%+v", m)
-
 	for coords, expected := range checks {
 		actual := m[coords[0]][coords[1]]
 		if actual != expected {
@@ -67,8 +66,6 @@ func Test3x3MatrixCreation(t *testing.T) {
 		{1, 1}: -2,
 		{2, 2}: 1,
 	}
-
-	fmt.Printf("%+v", m)
 
 	for coords, expected := range checks {
 		actual := m[coords[0]][coords[1]]
@@ -113,5 +110,48 @@ func TestMatrixInequality(t *testing.T) {
 
 	if reflect.DeepEqual(a, b) {
 		t.Fatalf("expected matrices to be different. got=\n%+v\n%+v", a, b)
+	}
+}
+
+func TestMatrixMultiplication(t *testing.T) {
+	a := Matrix{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 8, 7, 6},
+		{5, 4, 3, 2},
+	}
+	b := Matrix{
+		{-2, 1, 2, 3},
+		{3, 2, 1, -1},
+		{4, 3, 6, 5},
+		{1, 2, 7, 8},
+	}
+	expected := Matrix{
+		{20, 22, 50, 48},
+		{44, 54, 114, 108},
+		{40, 58, 110, 102},
+		{16, 26, 46, 42},
+	}
+
+	actual := Multiply(a, b)
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected matrices to be equal. got=\n%+v", actual)
+	}
+}
+
+func TestMatrixTupleMultiplication(t *testing.T) {
+	a := Matrix{
+		{1, 2, 3, 4},
+		{2, 4, 4, 2},
+		{8, 6, 4, 1},
+		{0, 0, 0, 1},
+	}
+	expected := tuple.Point{XVal: 18, YVal: 24, ZVal: 33}
+
+	actual := MultiplyTuple(a, &tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
+
+	if !reflect.DeepEqual(actual, &expected) {
+		t.Fatalf("expected %+v. got=%+v", &expected, actual)
 	}
 }
