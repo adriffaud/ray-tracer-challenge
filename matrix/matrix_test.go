@@ -149,7 +149,14 @@ func TestMatrixTupleMultiplication(t *testing.T) {
 	}
 	expected := tuple.Point{XVal: 18, YVal: 24, ZVal: 33}
 
-	actual := MultiplyTuple(a, &tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
+	actual, err := MultiplyTuple(a, &tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
+	if err != nil {
+		t.Fatal("expected no error.")
+	}
+
+	if reflect.TypeOf(actual) != reflect.TypeOf(&tuple.Point{}) {
+		t.Fatalf("expected %T. got=%T", reflect.TypeOf(&tuple.Point{}), reflect.TypeOf(actual))
+	}
 
 	if !reflect.DeepEqual(actual, &expected) {
 		t.Fatalf("expected %+v. got=%+v", &expected, actual)
