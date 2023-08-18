@@ -1,7 +1,7 @@
 BINARY_NAME = raytracer
 
 .PHONY: all
-all: test
+all: test build
 
 .PHONY: build
 build:

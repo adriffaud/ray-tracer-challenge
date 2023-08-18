@@ -4,7 +4,6 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	_ "image/png"
 	"log"
 	"math"
 	"os"
@@ -73,6 +72,7 @@ func scaleColor(c rtc_color.Color) color.Color {
 		R: scaleComponent(c.R),
 		G: scaleComponent(c.G),
 		B: scaleComponent(c.B),
+		A: 255,
 	}
 }
 

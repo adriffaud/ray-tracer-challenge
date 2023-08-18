@@ -3,11 +3,6 @@ package tuple
 // Vector is a struct representing a 3D vector
 type Vector struct{ XVal, YVal, ZVal float64 }
 
-// NewVector creates a new Vector instance
-func NewVector(x, y, z float64) *Vector {
-	return &Vector{XVal: x, YVal: y, ZVal: z}
-}
-
 // NewZeroVector creates a new zeroed Vector instance
 func NewZeroVector() *Vector {
 	return &Vector{XVal: 0, YVal: 0, ZVal: 0}

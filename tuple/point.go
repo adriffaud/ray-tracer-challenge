@@ -3,11 +3,6 @@ package tuple
 // Point is a struct representing a 3D point
 type Point struct{ XVal, YVal, ZVal float64 }
 
-// NewPoint creates a new Point instance
-func NewPoint(x, y, z float64) *Point {
-	return &Point{XVal: x, YVal: y, ZVal: z}
-}
-
 // X returns the x-coordinate of the Point
 func (p *Point) X() float64 {
 	return p.XVal

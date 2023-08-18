@@ -25,9 +25,9 @@ func Add(a, b Tuple) (Tuple, error) {
 
 	switch w {
 	case 0:
-		return NewVector(x, y, z), nil
+		return &Vector{x, y, z}, nil
 	case 1:
-		return NewPoint(x, y, z), nil
+		return &Point{x, y, z}, nil
 	default:
 		return nil, errors.New("operation not allowed")
 	}
@@ -42,9 +42,9 @@ func Sub(a, b Tuple) (Tuple, error) {
 
 	switch w {
 	case 0:
-		return NewVector(x, y, z), nil
+		return &Vector{x, y, z}, nil
 	case 1:
-		return NewPoint(x, y, z), nil
+		return &Point{x, y, z}, nil
 	default:
 		return nil, errors.New("operation not allowed")
 	}
@@ -58,9 +58,9 @@ func Negate(t Tuple) (Tuple, error) {
 
 	switch t.W() {
 	case 0:
-		return NewVector(x, y, z), nil
+		return &Vector{x, y, z}, nil
 	case 1:
-		return NewPoint(x, y, z), nil
+		return &Point{x, y, z}, nil
 	default:
 		return nil, errors.New("operation not allowed")
 	}
@@ -73,9 +73,9 @@ func Multiply(t Tuple, s float64) (Tuple, error) {
 
 	switch t.W() {
 	case 0:
-		return NewVector(x, y, z), nil
+		return &Vector{x, y, z}, nil
 	case 1:
-		return NewPoint(x, y, z), nil
+		return &Point{x, y, z}, nil
 	default:
 		return nil, errors.New("operation not allowed")
 	}
@@ -88,9 +88,9 @@ func Divide(t Tuple, s float64) (Tuple, error) {
 
 	switch t.W() {
 	case 0:
-		return NewVector(x, y, z), nil
+		return &Vector{x, y, z}, nil
 	case 1:
-		return NewPoint(x, y, z), nil
+		return &Point{x, y, z}, nil
 	default:
 		return nil, errors.New("operation not allowed")
 	}
@@ -100,9 +100,9 @@ func Magnitude(t Tuple) float64 {
 	return math.Sqrt(t.X()*t.X() + t.Y()*t.Y() + t.Z()*t.Z())
 }
 
-func Normalize(t Tuple) Vector {
+func Normalize(t Tuple) Tuple {
 	magnitude := Magnitude(t)
-	return *NewVector(t.X()/magnitude, t.Y()/magnitude, t.Z()/magnitude)
+	return &Vector{XVal: t.X() / magnitude, YVal: t.Y() / magnitude, ZVal: t.Z() / magnitude}
 }
 
 func Dot(v1, v2 Tuple) float64 {
@@ -114,5 +114,5 @@ func Cross(v1, v2 Tuple) Tuple {
 	y := v1.Z()*v2.X() - v1.X()*v2.Z()
 	z := v1.X()*v2.Y() - v1.Y()*v2.X()
 
-	return NewVector(x, y, z)
+	return &Vector{x, y, z}
 }
