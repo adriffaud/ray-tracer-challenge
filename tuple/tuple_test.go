@@ -170,11 +170,11 @@ func TestPointFromVectorSubtraction(t *testing.T) {
 }
 
 func TestTupleNegationWithSub(t *testing.T) {
-	zero := NewZeroVector()
+	zero := Vector{}
 	vector := Vector{1, -2, 3}
 	expected := Vector{-1, 2, -3}
 
-	actual, err := Sub(zero, &vector)
+	actual, err := Sub(&zero, &vector)
 	if err != nil {
 		t.Fatal("expected no error.")
 	}

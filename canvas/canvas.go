@@ -17,14 +17,17 @@ type Canvas struct {
 	Height int
 }
 
+// WritePixel sets the given color to the x/y coordinates in the canvas.
 func (c *Canvas) WritePixel(x, y int, color rtc_color.Color) {
 	c.Pixels[y][x] = color
 }
 
+// PixelAt returns the pixel color at the given canvas coordinates.
 func (c *Canvas) PixelAt(x, y int) rtc_color.Color {
 	return c.Pixels[y][x]
 }
 
+// NewCanvas initialize a new canvas with every pixel set with a black color.
 func NewCanvas(w, h int) *Canvas {
 	black := rtc_color.Color{R: 0, G: 0, B: 0}
 
@@ -42,6 +45,7 @@ func NewCanvas(w, h int) *Canvas {
 	return &Canvas{Width: w, Height: h, Pixels: p}
 }
 
+// Export exports the given canvas as a PNG image a the given path.
 func Export(c *Canvas, path string) {
 	img := image.NewNRGBA(image.Rect(0, 0, c.Width, c.Height))
 

@@ -33,7 +33,7 @@ func Add(a, b Tuple) (Tuple, error) {
 	}
 }
 
-// Sub subtracts two tuples and returns a new tuple
+// Sub subtracts two tuples and returns a new tuple.
 func Sub(a, b Tuple) (Tuple, error) {
 	x := a.X() - b.X()
 	y := a.Y() - b.Y()
@@ -50,7 +50,7 @@ func Sub(a, b Tuple) (Tuple, error) {
 	}
 }
 
-// Negate return the a new Tuple instance with its negated values
+// Negate return a new Tuple instance with its negated values.
 func Negate(t Tuple) (Tuple, error) {
 	x := -t.X()
 	y := -t.Y()
