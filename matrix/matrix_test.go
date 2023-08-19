@@ -176,3 +176,31 @@ func TestMatrixIdentityMultiplication(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", a, actual)
 	}
 }
+
+func TestMatrixTransposition(t *testing.T) {
+	a := Matrix{
+		{0, 9, 3, 0},
+		{9, 8, 0, 8},
+		{1, 8, 5, 3},
+		{0, 0, 5, 8},
+	}
+	expected := Matrix{
+		{0, 9, 1, 0},
+		{9, 8, 8, 0},
+		{3, 0, 5, 5},
+		{0, 8, 3, 8},
+	}
+
+	actual := Transpose(a)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestIdentityMatrixTransposition(t *testing.T) {
+	a := IdentityMatrix()
+	actual := Transpose(a)
+	if !reflect.DeepEqual(actual, a) {
+		t.Fatalf("expected %+v. got=%+v", a, actual)
+	}
+}

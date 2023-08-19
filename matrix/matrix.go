@@ -61,3 +61,15 @@ func MultiplyTuple(m Matrix, t tuple.Tuple) (tuple.Tuple, error) {
 		return nil, errors.New("operation not allowed")
 	}
 }
+
+func Transpose(m Matrix) Matrix {
+	t := NewMatrix(4, 4)
+
+	for row := 0; row < 4; row++ {
+		for col := 0; col < 4; col++ {
+			t[col][row] = m[row][col]
+		}
+	}
+
+	return t
+}
