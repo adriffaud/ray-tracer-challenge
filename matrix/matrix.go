@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
@@ -9,10 +10,10 @@ import (
 type Matrix [][]float64
 
 // NewMatrix generates a Matrix with the given x/y size.
-func NewMatrix(x, y int) Matrix {
-	m := make(Matrix, x)
+func NewMatrix(size int) Matrix {
+	m := make(Matrix, size)
 	for row := range m {
-		m[row] = make([]float64, y)
+		m[row] = make([]float64, size)
 	}
 
 	return m
@@ -28,7 +29,7 @@ func IdentityMatrix() Matrix {
 }
 
 func Multiply(a, b Matrix) Matrix {
-	m := NewMatrix(4, 4)
+	m := NewMatrix(4)
 
 	for row := 0; row < 4; row++ {
 		for col := 0; col < 4; col++ {
@@ -63,7 +64,7 @@ func MultiplyTuple(m Matrix, t tuple.Tuple) (tuple.Tuple, error) {
 }
 
 func Transpose(m Matrix) Matrix {
-	t := NewMatrix(4, 4)
+	t := NewMatrix(4)
 
 	for row := 0; row < 4; row++ {
 		for col := 0; col < 4; col++ {
@@ -72,4 +73,34 @@ func Transpose(m Matrix) Matrix {
 	}
 
 	return t
+}
+
+func Determinant(m Matrix) int {
+	return int(m[0][0]*m[1][1] - m[0][1]*m[1][0])
+}
+
+func Submatrix(m Matrix, row, col int) Matrix {
+	res := NewMatrix(len(m) - 1)
+
+	rowCounter := 0
+	for i := 0; i < len(m); i++ {
+		if i == row {
+			continue
+		}
+
+		colCounter := 0
+		for j := 0; j < len(m); j++ {
+			if j == col {
+				continue
+			}
+
+			res[rowCounter][colCounter] = m[i][j]
+
+			colCounter += 1
+		}
+
+		rowCounter += 1
+	}
+
+	return res
 }

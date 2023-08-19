@@ -204,3 +204,51 @@ func TestIdentityMatrixTransposition(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", a, actual)
 	}
 }
+
+func Test2x2Determinant(t *testing.T) {
+	a := Matrix{
+		{1, 5},
+		{-3, 2},
+	}
+
+	actual := Determinant(a)
+	if actual != 17 {
+		t.Fatalf("expected 17. got=%d", actual)
+	}
+}
+
+func Test3x3Submatrix(t *testing.T) {
+	a := Matrix{
+		{1, 5, 0},
+		{-3, 2, 7},
+		{0, 6, -3},
+	}
+	expected := Matrix{
+		{-3, 2},
+		{0, 6},
+	}
+
+	actual := Submatrix(a, 0, 2)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func Test4x4Submatrix(t *testing.T) {
+	a := Matrix{
+		{-6, 1, 1, 6},
+		{-8, 5, 8, 6},
+		{-1, 0, 8, 2},
+		{-7, 1, -1, 1},
+	}
+	expected := Matrix{
+		{-6, 1, 6},
+		{-8, 8, 6},
+		{-7, -1, 1},
+	}
+
+	actual := Submatrix(a, 2, 1)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
