@@ -162,3 +162,17 @@ func TestMatrixTupleMultiplication(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", &expected, actual)
 	}
 }
+
+func TestMatrixIdentityMultiplication(t *testing.T) {
+	a := Matrix{
+		{0, 1, 2, 4},
+		{1, 2, 4, 8},
+		{2, 4, 8, 16},
+		{4, 8, 16, 32},
+	}
+
+	actual := Multiply(a, IdentityMatrix())
+	if !reflect.DeepEqual(actual, a) {
+		t.Fatalf("expected %+v. got=%+v", a, actual)
+	}
+}

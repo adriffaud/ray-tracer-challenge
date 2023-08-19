@@ -18,6 +18,15 @@ func NewMatrix(x, y int) Matrix {
 	return m
 }
 
+func IdentityMatrix() Matrix {
+	return Matrix{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1},
+	}
+}
+
 func Multiply(a, b Matrix) Matrix {
 	m := NewMatrix(4, 4)
 
