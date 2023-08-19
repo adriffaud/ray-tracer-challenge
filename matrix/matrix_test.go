@@ -298,3 +298,56 @@ func Test3x3Cofactor(t *testing.T) {
 		t.Fatalf("expected cofactor=-25. got=%d", cofactor)
 	}
 }
+
+func Test3x3Determinant(t *testing.T) {
+	a := Matrix{
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4},
+	}
+	cofactor := Cofactor(a, 0, 0)
+	if cofactor != 56 {
+		t.Fatalf("expected 56.got=%d", cofactor)
+	}
+	cofactor = Cofactor(a, 0, 1)
+	if cofactor != 12 {
+		t.Fatalf("expected 12.got=%d", cofactor)
+	}
+	cofactor = Cofactor(a, 0, 2)
+	if cofactor != -46 {
+		t.Fatalf("expected -46.got=%d", cofactor)
+	}
+	determinant := Determinant(a)
+	if determinant != -196 {
+		t.Fatalf("expected -196. got=%d", determinant)
+	}
+}
+
+func Test4x4Determinant(t *testing.T) {
+	a := Matrix{
+		{-2, -8, 3, 5},
+		{-3, 1, 7, 3},
+		{1, 2, -9, 6},
+		{-6, 7, 7, -9},
+	}
+	cofactor := Cofactor(a, 0, 0)
+	if cofactor != 690 {
+		t.Fatalf("expected 690.got=%d", cofactor)
+	}
+	cofactor = Cofactor(a, 0, 1)
+	if cofactor != 447 {
+		t.Fatalf("expected 447.got=%d", cofactor)
+	}
+	cofactor = Cofactor(a, 0, 2)
+	if cofactor != 210 {
+		t.Fatalf("expected 210.got=%d", cofactor)
+	}
+	cofactor = Cofactor(a, 0, 3)
+	if cofactor != 51 {
+		t.Fatalf("expected 51.got=%d", cofactor)
+	}
+	determinant := Determinant(a)
+	if determinant != -4071 {
+		t.Fatalf("expected -4071. got=%d", determinant)
+	}
+}

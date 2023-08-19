@@ -75,7 +75,17 @@ func Transpose(m Matrix) Matrix {
 }
 
 func Determinant(m Matrix) int {
-	return int(m[0][0]*m[1][1] - m[0][1]*m[1][0])
+	var det int
+
+	if len(m) == 2 {
+		det = int(m[0][0]*m[1][1] - m[0][1]*m[1][0])
+	} else {
+		for col := 0; col < len(m); col++ {
+			det = det + int(m[0][col])*Cofactor(m, 0, col)
+		}
+	}
+
+	return det
 }
 
 func Submatrix(m Matrix, row, col int) Matrix {
