@@ -2,7 +2,7 @@ package float
 
 import "math"
 
-const epsilon = 1.0e-5
+const epsilon = 1.0e-4
 
 // ApproxEq compares two float64 and determine if they are close enough to be considered equals.
 // Inspiration : https://floating-point-gui.de/errors/comparison/

@@ -3,6 +3,7 @@ package matrix
 import (
 	"errors"
 
+	"github.com/adriffaud/ray-tracer-challenge/float"
 	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
 
@@ -122,9 +123,43 @@ func Minor(m Matrix, row, col int) int {
 func Cofactor(m Matrix, row, col int) int {
 	minor := Minor(m, row, col)
 
-	if row+col%2 == 1 {
+	if (row+col)%2 == 1 {
 		return -minor
 	} else {
 		return minor
 	}
+}
+
+func Inverse(m Matrix) (Matrix, error) {
+	det := Determinant(m)
+	if det == 0 {
+		return nil, errors.New("matrix is not invertible")
+	}
+
+	res := NewMatrix(len(m))
+
+	for row := 0; row < len(m); row++ {
+		for col := 0; col < len(m); col++ {
+			c := Cofactor(m, row, col)
+			res[col][row] = float64(c) / float64(det)
+		}
+	}
+
+	return res, nil
+}
+
+func Eq(a, b Matrix) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for row := 0; row < len(a); row++ {
+		for col := 0; col < len(a); col++ {
+			if !float.ApproxEq(a[row][col], b[row][col]) {
+				return false
+			}
+		}
+	}
+
+	return true
 }
