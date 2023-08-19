@@ -252,3 +252,21 @@ func Test4x4Submatrix(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
+
+func Test3x3Minor(t *testing.T) {
+	a := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+	b := Submatrix(a, 1, 0)
+	determinant := Determinant(b)
+	if determinant != 25 {
+		t.Fatalf("expected determinant to be 25. got=%d", determinant)
+	}
+
+	minor := Minor(a, 1, 0)
+	if minor != 25 {
+		t.Fatalf("expected minor to be 25. got=%d", minor)
+	}
+}

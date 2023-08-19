@@ -2,7 +2,6 @@ package matrix
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
@@ -103,4 +102,9 @@ func Submatrix(m Matrix, row, col int) Matrix {
 	}
 
 	return res
+}
+
+func Minor(m Matrix, row, col int) int {
+	sub := Submatrix(m, row, col)
+	return Determinant(sub)
 }
