@@ -270,3 +270,31 @@ func Test3x3Minor(t *testing.T) {
 		t.Fatalf("expected minor to be 25. got=%d", minor)
 	}
 }
+
+func Test3x3Cofactor(t *testing.T) {
+	a := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+
+	minor := Minor(a, 0, 0)
+	if minor != -12 {
+		t.Fatalf("expected minor=-12. got=%d", minor)
+	}
+
+	cofactor := Cofactor(a, 0, 0)
+	if cofactor != -12 {
+		t.Fatalf("expected cofactor=-12. got=%d", cofactor)
+	}
+
+	minor = Minor(a, 1, 0)
+	if minor != 25 {
+		t.Fatalf("expected minor=25. got=%d", minor)
+	}
+
+	cofactor = Cofactor(a, 1, 0)
+	if cofactor != -25 {
+		t.Fatalf("expected cofactor=-25. got=%d", cofactor)
+	}
+}

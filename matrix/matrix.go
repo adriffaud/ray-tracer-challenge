@@ -108,3 +108,13 @@ func Minor(m Matrix, row, col int) int {
 	sub := Submatrix(m, row, col)
 	return Determinant(sub)
 }
+
+func Cofactor(m Matrix, row, col int) int {
+	minor := Minor(m, row, col)
+
+	if row+col%2 == 1 {
+		return -minor
+	} else {
+		return minor
+	}
+}
