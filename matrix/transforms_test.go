@@ -185,3 +185,46 @@ func TestShearing(t *testing.T) {
 		assertEquals(t, &test.expected, actual)
 	}
 }
+
+func TestTransformationSequence(t *testing.T) {
+	p := tuple.Point{XVal: 1, YVal: 0, ZVal: 1}
+	a := RotationX(math.Pi / 2)
+	b := Scaling(5, 5, 5)
+	c := Translation(10, 5, 7)
+
+	expected := tuple.Point{XVal: 1, YVal: -1, ZVal: 0}
+	p2, err := MultiplyTuple(a, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expected, p2)
+
+	expected = tuple.Point{XVal: 5, YVal: -5, ZVal: 0}
+	p3, err := MultiplyTuple(b, p2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expected, p3)
+
+	expected = tuple.Point{XVal: 15, YVal: 0, ZVal: 7}
+	p4, err := MultiplyTuple(c, p3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expected, p4)
+}
+
+func TestChainedTransformations(t *testing.T) {
+	p := tuple.Point{XVal: 1, YVal: 0, ZVal: 1}
+	a := RotationX(math.Pi / 2)
+	b := Scaling(5, 5, 5)
+	c := Translation(10, 5, 7)
+
+	transform := Multiply(Multiply(c, b), a)
+	expected := tuple.Point{XVal: 15, YVal: 0, ZVal: 7}
+	actual, err := MultiplyTuple(transform, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expected, actual)
+}
