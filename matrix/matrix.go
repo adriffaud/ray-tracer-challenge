@@ -75,14 +75,14 @@ func Transpose(m Matrix) Matrix {
 	return t
 }
 
-func Determinant(m Matrix) int {
-	var det int
+func Determinant(m Matrix) float64 {
+	var det float64
 
 	if len(m) == 2 {
-		det = int(m[0][0]*m[1][1] - m[0][1]*m[1][0])
+		det = m[0][0]*m[1][1] - m[0][1]*m[1][0]
 	} else {
 		for col := 0; col < len(m); col++ {
-			det = det + int(m[0][col])*Cofactor(m, 0, col)
+			det = det + m[0][col]*Cofactor(m, 0, col)
 		}
 	}
 
@@ -115,12 +115,12 @@ func Submatrix(m Matrix, row, col int) Matrix {
 	return res
 }
 
-func Minor(m Matrix, row, col int) int {
+func Minor(m Matrix, row, col int) float64 {
 	sub := Submatrix(m, row, col)
 	return Determinant(sub)
 }
 
-func Cofactor(m Matrix, row, col int) int {
+func Cofactor(m Matrix, row, col int) float64 {
 	minor := Minor(m, row, col)
 
 	if (row+col)%2 == 1 {

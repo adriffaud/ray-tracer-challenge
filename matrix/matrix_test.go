@@ -213,7 +213,7 @@ func Test2x2Determinant(t *testing.T) {
 
 	actual := Determinant(a)
 	if actual != 17 {
-		t.Fatalf("expected 17. got=%d", actual)
+		t.Fatalf("expected 17. got=%f", actual)
 	}
 }
 
@@ -262,12 +262,12 @@ func Test3x3Minor(t *testing.T) {
 	b := Submatrix(a, 1, 0)
 	determinant := Determinant(b)
 	if determinant != 25 {
-		t.Fatalf("expected determinant to be 25. got=%d", determinant)
+		t.Fatalf("expected determinant to be 25. got=%f", determinant)
 	}
 
 	minor := Minor(a, 1, 0)
 	if minor != 25 {
-		t.Fatalf("expected minor to be 25. got=%d", minor)
+		t.Fatalf("expected minor to be 25. got=%f", minor)
 	}
 }
 
@@ -280,22 +280,22 @@ func Test3x3Cofactor(t *testing.T) {
 
 	minor := Minor(a, 0, 0)
 	if minor != -12 {
-		t.Fatalf("expected minor=-12. got=%d", minor)
+		t.Fatalf("expected minor=-12. got=%f", minor)
 	}
 
 	cofactor := Cofactor(a, 0, 0)
 	if cofactor != -12 {
-		t.Fatalf("expected cofactor=-12. got=%d", cofactor)
+		t.Fatalf("expected cofactor=-12. got=%f", cofactor)
 	}
 
 	minor = Minor(a, 1, 0)
 	if minor != 25 {
-		t.Fatalf("expected minor=25. got=%d", minor)
+		t.Fatalf("expected minor=25. got=%f", minor)
 	}
 
 	cofactor = Cofactor(a, 1, 0)
 	if cofactor != -25 {
-		t.Fatalf("expected cofactor=-25. got=%d", cofactor)
+		t.Fatalf("expected cofactor=-25. got=%f", cofactor)
 	}
 }
 
@@ -307,19 +307,19 @@ func Test3x3Determinant(t *testing.T) {
 	}
 	cofactor := Cofactor(a, 0, 0)
 	if cofactor != 56 {
-		t.Fatalf("expected 56.got=%d", cofactor)
+		t.Fatalf("expected 56.got=%f", cofactor)
 	}
 	cofactor = Cofactor(a, 0, 1)
 	if cofactor != 12 {
-		t.Fatalf("expected 12.got=%d", cofactor)
+		t.Fatalf("expected 12.got=%f", cofactor)
 	}
 	cofactor = Cofactor(a, 0, 2)
 	if cofactor != -46 {
-		t.Fatalf("expected -46.got=%d", cofactor)
+		t.Fatalf("expected -46.got=%f", cofactor)
 	}
 	determinant := Determinant(a)
 	if determinant != -196 {
-		t.Fatalf("expected -196. got=%d", determinant)
+		t.Fatalf("expected -196. got=%f", determinant)
 	}
 }
 
@@ -332,23 +332,23 @@ func Test4x4Determinant(t *testing.T) {
 	}
 	cofactor := Cofactor(a, 0, 0)
 	if cofactor != 690 {
-		t.Fatalf("expected 690.got=%d", cofactor)
+		t.Fatalf("expected 690.got=%f", cofactor)
 	}
 	cofactor = Cofactor(a, 0, 1)
 	if cofactor != 447 {
-		t.Fatalf("expected 447.got=%d", cofactor)
+		t.Fatalf("expected 447.got=%f", cofactor)
 	}
 	cofactor = Cofactor(a, 0, 2)
 	if cofactor != 210 {
-		t.Fatalf("expected 210.got=%d", cofactor)
+		t.Fatalf("expected 210.got=%f", cofactor)
 	}
 	cofactor = Cofactor(a, 0, 3)
 	if cofactor != 51 {
-		t.Fatalf("expected 51.got=%d", cofactor)
+		t.Fatalf("expected 51.got=%f", cofactor)
 	}
 	determinant := Determinant(a)
 	if determinant != -4071 {
-		t.Fatalf("expected -4071. got=%d", determinant)
+		t.Fatalf("expected -4071. got=%f", determinant)
 	}
 }
 
@@ -362,7 +362,7 @@ func TestInvertibleMatrix(t *testing.T) {
 
 	det := Determinant(a)
 	if det != -2120 {
-		t.Fatalf("expected -2120. got=%d", det)
+		t.Fatalf("expected -2120. got=%f", det)
 	}
 }
 
@@ -376,7 +376,7 @@ func TestNoninvertibleMatrix(t *testing.T) {
 
 	det := Determinant(a)
 	if det != 0 {
-		t.Fatalf("expected 0. got=%d", det)
+		t.Fatalf("expected 0. got=%f", det)
 	}
 }
 
@@ -394,12 +394,12 @@ func TestMatrixInverse(t *testing.T) {
 
 	det := Determinant(a)
 	if det != 532 {
-		t.Fatalf("expected 532. got=%d", det)
+		t.Fatalf("expected 532. got=%f", det)
 	}
 
 	cofactor := Cofactor(a, 2, 3)
 	if cofactor != -160 {
-		t.Fatalf("expected -160. got=%d", cofactor)
+		t.Fatalf("expected -160. got=%f", cofactor)
 	}
 
 	if b[3][2] != -160.0/532.0 {
@@ -408,7 +408,7 @@ func TestMatrixInverse(t *testing.T) {
 
 	cofactor = Cofactor(a, 3, 2)
 	if cofactor != 105 {
-		t.Fatalf("expected 105. got=%d", cofactor)
+		t.Fatalf("expected 105. got=%f", cofactor)
 	}
 
 	if b[2][3] != 105.0/532.0 {
