@@ -28,7 +28,7 @@ func IdentityMatrix() Matrix {
 	}
 }
 
-func Multiply(a, b Matrix) Matrix {
+func (a Matrix) Multiply(b Matrix) Matrix {
 	m := NewMatrix(4)
 
 	for row := 0; row < 4; row++ {
@@ -40,7 +40,7 @@ func Multiply(a, b Matrix) Matrix {
 	return m
 }
 
-func MultiplyTuple(m Matrix, t tuple.Tuple) (tuple.Tuple, error) {
+func (m Matrix) MultiplyTuple(t tuple.Tuple) (tuple.Tuple, error) {
 	switch t.W() {
 	case 0:
 		v := tuple.Vector{
@@ -63,7 +63,7 @@ func MultiplyTuple(m Matrix, t tuple.Tuple) (tuple.Tuple, error) {
 	}
 }
 
-func Transpose(m Matrix) Matrix {
+func (m Matrix) Transpose() Matrix {
 	t := NewMatrix(4)
 
 	for row := 0; row < 4; row++ {
@@ -75,21 +75,21 @@ func Transpose(m Matrix) Matrix {
 	return t
 }
 
-func Determinant(m Matrix) float64 {
+func (m Matrix) Determinant() float64 {
 	var det float64
 
 	if len(m) == 2 {
 		det = m[0][0]*m[1][1] - m[0][1]*m[1][0]
 	} else {
 		for col := 0; col < len(m); col++ {
-			det = det + m[0][col]*Cofactor(m, 0, col)
+			det = det + m[0][col]*m.Cofactor(0, col)
 		}
 	}
 
 	return det
 }
 
-func Submatrix(m Matrix, row, col int) Matrix {
+func (m Matrix) Submatrix(row, col int) Matrix {
 	res := NewMatrix(len(m) - 1)
 
 	rowCounter := 0
@@ -115,13 +115,13 @@ func Submatrix(m Matrix, row, col int) Matrix {
 	return res
 }
 
-func Minor(m Matrix, row, col int) float64 {
-	sub := Submatrix(m, row, col)
-	return Determinant(sub)
+func (m Matrix) Minor(row, col int) float64 {
+	sub := m.Submatrix(row, col)
+	return sub.Determinant()
 }
 
-func Cofactor(m Matrix, row, col int) float64 {
-	minor := Minor(m, row, col)
+func (m Matrix) Cofactor(row, col int) float64 {
+	minor := m.Minor(row, col)
 
 	if (row+col)%2 == 1 {
 		return -minor
@@ -130,8 +130,8 @@ func Cofactor(m Matrix, row, col int) float64 {
 	}
 }
 
-func Inverse(m Matrix) (Matrix, error) {
-	det := Determinant(m)
+func (m Matrix) Inverse() (Matrix, error) {
+	det := m.Determinant()
 	if det == 0 {
 		return nil, errors.New("matrix is not invertible")
 	}
@@ -140,7 +140,7 @@ func Inverse(m Matrix) (Matrix, error) {
 
 	for row := 0; row < len(m); row++ {
 		for col := 0; col < len(m); col++ {
-			c := Cofactor(m, row, col)
+			c := m.Cofactor(row, col)
 			res[col][row] = float64(c) / float64(det)
 		}
 	}

@@ -133,7 +133,7 @@ func TestMatrixMultiplication(t *testing.T) {
 		{16, 26, 46, 42},
 	}
 
-	actual := Multiply(a, b)
+	actual := a.Multiply(b)
 
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected matrices to be equal. got=\n%+v", actual)
@@ -149,7 +149,7 @@ func TestMatrixTupleMultiplication(t *testing.T) {
 	}
 	expected := tuple.Point{XVal: 18, YVal: 24, ZVal: 33}
 
-	actual, err := MultiplyTuple(a, &tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
+	actual, err := a.MultiplyTuple(&tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
 	if err != nil {
 		t.Fatal("expected no error.")
 	}
@@ -171,7 +171,7 @@ func TestMatrixIdentityMultiplication(t *testing.T) {
 		{4, 8, 16, 32},
 	}
 
-	actual := Multiply(a, IdentityMatrix())
+	actual := IdentityMatrix().Multiply(a)
 	if !reflect.DeepEqual(actual, a) {
 		t.Fatalf("expected %+v. got=%+v", a, actual)
 	}
@@ -191,7 +191,7 @@ func TestMatrixTransposition(t *testing.T) {
 		{0, 8, 3, 8},
 	}
 
-	actual := Transpose(a)
+	actual := a.Transpose()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
@@ -199,7 +199,7 @@ func TestMatrixTransposition(t *testing.T) {
 
 func TestIdentityMatrixTransposition(t *testing.T) {
 	a := IdentityMatrix()
-	actual := Transpose(a)
+	actual := a.Transpose()
 	if !reflect.DeepEqual(actual, a) {
 		t.Fatalf("expected %+v. got=%+v", a, actual)
 	}
@@ -211,7 +211,7 @@ func Test2x2Determinant(t *testing.T) {
 		{-3, 2},
 	}
 
-	actual := Determinant(a)
+	actual := a.Determinant()
 	if actual != 17 {
 		t.Fatalf("expected 17. got=%f", actual)
 	}
@@ -228,7 +228,7 @@ func Test3x3Submatrix(t *testing.T) {
 		{0, 6},
 	}
 
-	actual := Submatrix(a, 0, 2)
+	actual := a.Submatrix(0, 2)
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
@@ -247,7 +247,7 @@ func Test4x4Submatrix(t *testing.T) {
 		{-7, -1, 1},
 	}
 
-	actual := Submatrix(a, 2, 1)
+	actual := a.Submatrix(2, 1)
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
@@ -259,13 +259,13 @@ func Test3x3Minor(t *testing.T) {
 		{2, -1, -7},
 		{6, -1, 5},
 	}
-	b := Submatrix(a, 1, 0)
-	determinant := Determinant(b)
+	b := a.Submatrix(1, 0)
+	determinant := b.Determinant()
 	if determinant != 25 {
 		t.Fatalf("expected determinant to be 25. got=%f", determinant)
 	}
 
-	minor := Minor(a, 1, 0)
+	minor := a.Minor(1, 0)
 	if minor != 25 {
 		t.Fatalf("expected minor to be 25. got=%f", minor)
 	}
@@ -278,22 +278,22 @@ func Test3x3Cofactor(t *testing.T) {
 		{6, -1, 5},
 	}
 
-	minor := Minor(a, 0, 0)
+	minor := a.Minor(0, 0)
 	if minor != -12 {
 		t.Fatalf("expected minor=-12. got=%f", minor)
 	}
 
-	cofactor := Cofactor(a, 0, 0)
+	cofactor := a.Cofactor(0, 0)
 	if cofactor != -12 {
 		t.Fatalf("expected cofactor=-12. got=%f", cofactor)
 	}
 
-	minor = Minor(a, 1, 0)
+	minor = a.Minor(1, 0)
 	if minor != 25 {
 		t.Fatalf("expected minor=25. got=%f", minor)
 	}
 
-	cofactor = Cofactor(a, 1, 0)
+	cofactor = a.Cofactor(1, 0)
 	if cofactor != -25 {
 		t.Fatalf("expected cofactor=-25. got=%f", cofactor)
 	}
@@ -305,19 +305,19 @@ func Test3x3Determinant(t *testing.T) {
 		{-5, 8, -4},
 		{2, 6, 4},
 	}
-	cofactor := Cofactor(a, 0, 0)
+	cofactor := a.Cofactor(0, 0)
 	if cofactor != 56 {
 		t.Fatalf("expected 56.got=%f", cofactor)
 	}
-	cofactor = Cofactor(a, 0, 1)
+	cofactor = a.Cofactor(0, 1)
 	if cofactor != 12 {
 		t.Fatalf("expected 12.got=%f", cofactor)
 	}
-	cofactor = Cofactor(a, 0, 2)
+	cofactor = a.Cofactor(0, 2)
 	if cofactor != -46 {
 		t.Fatalf("expected -46.got=%f", cofactor)
 	}
-	determinant := Determinant(a)
+	determinant := a.Determinant()
 	if determinant != -196 {
 		t.Fatalf("expected -196. got=%f", determinant)
 	}
@@ -330,23 +330,23 @@ func Test4x4Determinant(t *testing.T) {
 		{1, 2, -9, 6},
 		{-6, 7, 7, -9},
 	}
-	cofactor := Cofactor(a, 0, 0)
+	cofactor := a.Cofactor(0, 0)
 	if cofactor != 690 {
 		t.Fatalf("expected 690.got=%f", cofactor)
 	}
-	cofactor = Cofactor(a, 0, 1)
+	cofactor = a.Cofactor(0, 1)
 	if cofactor != 447 {
 		t.Fatalf("expected 447.got=%f", cofactor)
 	}
-	cofactor = Cofactor(a, 0, 2)
+	cofactor = a.Cofactor(0, 2)
 	if cofactor != 210 {
 		t.Fatalf("expected 210.got=%f", cofactor)
 	}
-	cofactor = Cofactor(a, 0, 3)
+	cofactor = a.Cofactor(0, 3)
 	if cofactor != 51 {
 		t.Fatalf("expected 51.got=%f", cofactor)
 	}
-	determinant := Determinant(a)
+	determinant := a.Determinant()
 	if determinant != -4071 {
 		t.Fatalf("expected -4071. got=%f", determinant)
 	}
@@ -360,7 +360,7 @@ func TestInvertibleMatrix(t *testing.T) {
 		{9, 1, 7, -6},
 	}
 
-	det := Determinant(a)
+	det := a.Determinant()
 	if det != -2120 {
 		t.Fatalf("expected -2120. got=%f", det)
 	}
@@ -374,7 +374,7 @@ func TestNoninvertibleMatrix(t *testing.T) {
 		{0, 0, 0, 0},
 	}
 
-	det := Determinant(a)
+	det := a.Determinant()
 	if det != 0 {
 		t.Fatalf("expected 0. got=%f", det)
 	}
@@ -387,17 +387,17 @@ func TestMatrixInverse(t *testing.T) {
 		{7, 7, -6, -7},
 		{1, -3, 7, 4},
 	}
-	b, err := Inverse(a)
+	b, err := a.Inverse()
 	if err != nil {
 		t.Fatal("expected an invertible matrix")
 	}
 
-	det := Determinant(a)
+	det := a.Determinant()
 	if det != 532 {
 		t.Fatalf("expected 532. got=%f", det)
 	}
 
-	cofactor := Cofactor(a, 2, 3)
+	cofactor := a.Cofactor(2, 3)
 	if cofactor != -160 {
 		t.Fatalf("expected -160. got=%f", cofactor)
 	}
@@ -406,7 +406,7 @@ func TestMatrixInverse(t *testing.T) {
 		t.Fatal("expected b[3][2] to equal -160/532")
 	}
 
-	cofactor = Cofactor(a, 3, 2)
+	cofactor = a.Cofactor(3, 2)
 	if cofactor != 105 {
 		t.Fatalf("expected 105. got=%f", cofactor)
 	}
@@ -441,7 +441,7 @@ func TestMatrixInverse2(t *testing.T) {
 		{-0.69231, -0.69231, -0.76923, -1.92308},
 	}
 
-	actual, err := Inverse(a)
+	actual, err := a.Inverse()
 	if err != nil {
 		t.Fatal("expected an invertible matrix")
 	}
@@ -465,7 +465,7 @@ func TestMatrixInverse3(t *testing.T) {
 		{0.17778, 0.06667, -0.26667, 0.33333},
 	}
 
-	actual, err := Inverse(a)
+	actual, err := a.Inverse()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -488,13 +488,13 @@ func TestMatrixInverseMultiplication(t *testing.T) {
 		{7, 0, 5, 4},
 		{6, -2, 0, 5},
 	}
-	c := Multiply(a, b)
+	c := a.Multiply(b)
 
-	inv, err := Inverse(b)
+	inv, err := b.Inverse()
 	if err != nil {
 		t.Fatal(err)
 	}
-	actual := Multiply(c, inv)
+	actual := c.Multiply(inv)
 
 	if !Eq(actual, a) {
 		t.Fatalf("expected %+v. got=%+v", a, actual)
