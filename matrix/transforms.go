@@ -49,3 +49,14 @@ func RotationZ(r float64) Matrix {
 
 	return m
 }
+
+func Shearing(xy, xz, yx, yz, zx, zy float64) Matrix {
+	m := IdentityMatrix()
+	m[0][1] = xy
+	m[0][2] = xz
+	m[1][0] = yx
+	m[1][2] = yz
+	m[2][0] = zx
+	m[2][1] = zy
+	return m
+}

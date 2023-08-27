@@ -126,23 +126,26 @@ func TestMatrixReflection(t *testing.T) {
 	}
 }
 
-func TestMatrixXRotation(t *testing.T) {
-	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
-	halfQuarter := RotationX(math.Pi / 4)
-	expectedHalf := tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: math.Sqrt(2) / 2}
-	actualHalf, err := MultiplyTuple(halfQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
+func TestMatrixRotation(t *testing.T) {
+	tests := []struct {
+		transform        Matrix
+		origin, expected tuple.Point
+	}{
+		{RotationX(math.Pi / 4), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: math.Sqrt(2) / 2}},
+		{RotationX(math.Pi / 2), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: 0, YVal: 0, ZVal: 1}},
+		{RotationY(math.Pi / 4), tuple.Point{XVal: 0, YVal: 0, ZVal: 1}, tuple.Point{XVal: math.Sqrt(2) / 2, YVal: 0, ZVal: math.Sqrt(2) / 2}},
+		{RotationY(math.Pi / 2), tuple.Point{XVal: 0, YVal: 0, ZVal: 1}, tuple.Point{XVal: 1, YVal: 0, ZVal: 0}},
+		{RotationZ(math.Pi / 4), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: -math.Sqrt(2) / 2, YVal: math.Sqrt(2) / 2, ZVal: 0}},
+		{RotationZ(math.Pi / 2), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: -1, YVal: 0, ZVal: 0}},
 	}
-	assertEquals(t, &expectedHalf, actualHalf)
 
-	fullQuarter := RotationX(math.Pi / 2)
-	expectedFull := tuple.Point{XVal: 0, YVal: 0, ZVal: 1}
-	actualFull, err := MultiplyTuple(fullQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
+	for _, test := range tests {
+		actual, err := MultiplyTuple(test.transform, &test.origin)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assertEquals(t, &test.expected, actual)
 	}
-	assertEquals(t, &expectedFull, actualFull)
 }
 
 func TestInverseMatrixXRotation(t *testing.T) {
@@ -160,40 +163,25 @@ func TestInverseMatrixXRotation(t *testing.T) {
 	assertEquals(t, &expectedHalf, actualHalf)
 }
 
-func TestMatrixYRotation(t *testing.T) {
-	p := tuple.Point{XVal: 0, YVal: 0, ZVal: 1}
-	halfQuarter := RotationY(math.Pi / 4)
-	expectedHalf := tuple.Point{XVal: math.Sqrt(2) / 2, YVal: 0, ZVal: math.Sqrt(2) / 2}
-	actualHalf, err := MultiplyTuple(halfQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
+func TestShearing(t *testing.T) {
+	tests := []struct {
+		transform        Matrix
+		origin, expected tuple.Point
+	}{
+		{Shearing(1, 0, 0, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 5, YVal: 3, ZVal: 4}},
+		{Shearing(0, 1, 0, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 6, YVal: 3, ZVal: 4}},
+		{Shearing(0, 0, 1, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 5, ZVal: 4}},
+		{Shearing(0, 0, 0, 1, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 7, ZVal: 4}},
+		{Shearing(0, 0, 0, 0, 1, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 3, ZVal: 6}},
+		{Shearing(0, 0, 0, 0, 0, 1), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 3, ZVal: 7}},
 	}
-	assertEquals(t, &expectedHalf, actualHalf)
 
-	fullQuarter := RotationY(math.Pi / 2)
-	expectedFull := tuple.Point{XVal: 1, YVal: 0, ZVal: 0}
-	actualFull, err := MultiplyTuple(fullQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
-	}
-	assertEquals(t, &expectedFull, actualFull)
-}
+	for _, test := range tests {
+		actual, err := MultiplyTuple(test.transform, &test.origin)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-func TestMatrixZRotation(t *testing.T) {
-	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
-	halfQuarter := RotationZ(math.Pi / 4)
-	expectedHalf := tuple.Point{XVal: -math.Sqrt(2) / 2, YVal: math.Sqrt(2) / 2, ZVal: 0}
-	actualHalf, err := MultiplyTuple(halfQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
+		assertEquals(t, &test.expected, actual)
 	}
-	assertEquals(t, &expectedHalf, actualHalf)
-
-	fullQuarter := RotationZ(math.Pi / 2)
-	expectedFull := tuple.Point{XVal: -1, YVal: 0, ZVal: 0}
-	actualFull, err := MultiplyTuple(fullQuarter, &p)
-	if err != nil {
-		t.Fatal(err)
-	}
-	assertEquals(t, &expectedFull, actualFull)
 }
