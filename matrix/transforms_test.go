@@ -1,11 +1,25 @@
 package matrix
 
 import (
+	"math"
 	"reflect"
 	"testing"
 
+	"github.com/adriffaud/ray-tracer-challenge/float"
 	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
+
+func assertEquals(t *testing.T, expected, actual tuple.Tuple) {
+	if !float.ApproxEq(expected.X(), actual.X()) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+	if !float.ApproxEq(expected.Y(), actual.Y()) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+	if !float.ApproxEq(expected.Z(), actual.Z()) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
 
 func TestTranslationMultiplication(t *testing.T) {
 	transform := Translation(5, -3, 2)
@@ -110,4 +124,76 @@ func TestMatrixReflection(t *testing.T) {
 	if !reflect.DeepEqual(actual, &expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
+}
+
+func TestMatrixXRotation(t *testing.T) {
+	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
+	halfQuarter := RotationX(math.Pi / 4)
+	expectedHalf := tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: math.Sqrt(2) / 2}
+	actualHalf, err := MultiplyTuple(halfQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedHalf, actualHalf)
+
+	fullQuarter := RotationX(math.Pi / 2)
+	expectedFull := tuple.Point{XVal: 0, YVal: 0, ZVal: 1}
+	actualFull, err := MultiplyTuple(fullQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedFull, actualFull)
+}
+
+func TestInverseMatrixXRotation(t *testing.T) {
+	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
+	halfQuarter := RotationX(math.Pi / 4)
+	inv, err := Inverse(halfQuarter)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expectedHalf := tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: -math.Sqrt(2) / 2}
+	actualHalf, err := MultiplyTuple(inv, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedHalf, actualHalf)
+}
+
+func TestMatrixYRotation(t *testing.T) {
+	p := tuple.Point{XVal: 0, YVal: 0, ZVal: 1}
+	halfQuarter := RotationY(math.Pi / 4)
+	expectedHalf := tuple.Point{XVal: math.Sqrt(2) / 2, YVal: 0, ZVal: math.Sqrt(2) / 2}
+	actualHalf, err := MultiplyTuple(halfQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedHalf, actualHalf)
+
+	fullQuarter := RotationY(math.Pi / 2)
+	expectedFull := tuple.Point{XVal: 1, YVal: 0, ZVal: 0}
+	actualFull, err := MultiplyTuple(fullQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedFull, actualFull)
+}
+
+func TestMatrixZRotation(t *testing.T) {
+	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
+	halfQuarter := RotationZ(math.Pi / 4)
+	expectedHalf := tuple.Point{XVal: -math.Sqrt(2) / 2, YVal: math.Sqrt(2) / 2, ZVal: 0}
+	actualHalf, err := MultiplyTuple(halfQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedHalf, actualHalf)
+
+	fullQuarter := RotationZ(math.Pi / 2)
+	expectedFull := tuple.Point{XVal: -1, YVal: 0, ZVal: 0}
+	actualFull, err := MultiplyTuple(fullQuarter, &p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEquals(t, &expectedFull, actualFull)
 }
