@@ -1,4 +1,4 @@
-package tuple
+package primitives
 
 // Vector is a struct representing a 3D vector
 type Vector struct{ XVal, YVal, ZVal float64 }

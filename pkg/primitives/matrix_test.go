@@ -1,10 +1,8 @@
-package matrix
+package primitives
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/tuple"
 )
 
 func Test4x4MatrixConstruction(t *testing.T) {
@@ -147,15 +145,15 @@ func TestMatrixTupleMultiplication(t *testing.T) {
 		{8, 6, 4, 1},
 		{0, 0, 0, 1},
 	}
-	expected := tuple.Point{XVal: 18, YVal: 24, ZVal: 33}
+	expected := Point{XVal: 18, YVal: 24, ZVal: 33}
 
-	actual, err := a.MultiplyTuple(&tuple.Point{XVal: 1, YVal: 2, ZVal: 3})
+	actual, err := a.MultiplyTuple(&Point{XVal: 1, YVal: 2, ZVal: 3})
 	if err != nil {
 		t.Fatal("expected no error.")
 	}
 
-	if reflect.TypeOf(actual) != reflect.TypeOf(&tuple.Point{}) {
-		t.Fatalf("expected %T. got=%T", reflect.TypeOf(&tuple.Point{}), reflect.TypeOf(actual))
+	if reflect.TypeOf(actual) != reflect.TypeOf(&Point{}) {
+		t.Fatalf("expected %T. got=%T", reflect.TypeOf(&Point{}), reflect.TypeOf(actual))
 	}
 
 	if !reflect.DeepEqual(actual, &expected) {

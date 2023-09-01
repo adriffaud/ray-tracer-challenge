@@ -1,10 +1,9 @@
-package matrix
+package primitives
 
 import (
 	"errors"
 
-	"github.com/adriffaud/ray-tracer-challenge/float"
-	"github.com/adriffaud/ray-tracer-challenge/tuple"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
 type Matrix [][]float64
@@ -40,10 +39,10 @@ func (a Matrix) Multiply(b Matrix) Matrix {
 	return m
 }
 
-func (m Matrix) MultiplyTuple(t tuple.Tuple) (tuple.Tuple, error) {
+func (m Matrix) MultiplyTuple(t Tuple) (Tuple, error) {
 	switch t.W() {
 	case 0:
-		v := tuple.Vector{
+		v := Vector{
 			XVal: m[0][0]*t.X() + m[0][1]*t.Y() + m[0][2]*t.Z(),
 			YVal: m[1][0]*t.X() + m[1][1]*t.Y() + m[1][2]*t.Z(),
 			ZVal: m[2][0]*t.X() + m[2][1]*t.Y() + m[2][2]*t.Z(),
@@ -51,7 +50,7 @@ func (m Matrix) MultiplyTuple(t tuple.Tuple) (tuple.Tuple, error) {
 
 		return &v, nil
 	case 1:
-		p := tuple.Point{
+		p := Point{
 			XVal: m[0][0]*t.X() + m[0][1]*t.Y() + m[0][2]*t.Z() + m[0][3],
 			YVal: m[1][0]*t.X() + m[1][1]*t.Y() + m[1][2]*t.Z() + m[1][3],
 			ZVal: m[2][0]*t.X() + m[2][1]*t.Y() + m[2][2]*t.Z() + m[2][3],

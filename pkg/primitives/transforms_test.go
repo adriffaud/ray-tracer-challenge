@@ -1,15 +1,14 @@
-package matrix
+package primitives
 
 import (
 	"math"
 	"reflect"
 	"testing"
 
-	"github.com/adriffaud/ray-tracer-challenge/float"
-	"github.com/adriffaud/ray-tracer-challenge/tuple"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
-func assertEquals(t *testing.T, expected, actual tuple.Tuple) {
+func assertEquals(t *testing.T, expected, actual Tuple) {
 	if !float.ApproxEq(expected.X(), actual.X()) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
@@ -23,8 +22,8 @@ func assertEquals(t *testing.T, expected, actual tuple.Tuple) {
 
 func TestTranslationMultiplication(t *testing.T) {
 	transform := Translation(5, -3, 2)
-	p := tuple.Point{XVal: -3, YVal: 4, ZVal: 5}
-	expected := tuple.Point{XVal: 2, YVal: 1, ZVal: 7}
+	p := Point{XVal: -3, YVal: 4, ZVal: 5}
+	expected := Point{XVal: 2, YVal: 1, ZVal: 7}
 	actual, err := transform.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
@@ -41,8 +40,8 @@ func TestInverseTranslationMultiplication(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	p := tuple.Point{XVal: -3, YVal: 4, ZVal: 5}
-	expected := tuple.Point{XVal: -8, YVal: 7, ZVal: 3}
+	p := Point{XVal: -3, YVal: 4, ZVal: 5}
+	expected := Point{XVal: -8, YVal: 7, ZVal: 3}
 	actual, err := inv.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
@@ -55,7 +54,7 @@ func TestInverseTranslationMultiplication(t *testing.T) {
 
 func TestVectorTranslation(t *testing.T) {
 	transform := Translation(5, -3, 2)
-	v := tuple.Vector{XVal: -3, YVal: 4, ZVal: 5}
+	v := Vector{XVal: -3, YVal: 4, ZVal: 5}
 	actual, err := transform.MultiplyTuple(&v)
 	if err != nil {
 		t.Fatal(err)
@@ -68,8 +67,8 @@ func TestVectorTranslation(t *testing.T) {
 
 func TestPointMatrixScaling(t *testing.T) {
 	transform := Scaling(2, 3, 4)
-	p := tuple.Point{XVal: -4, YVal: 6, ZVal: 8}
-	expected := tuple.Point{XVal: -8, YVal: 18, ZVal: 32}
+	p := Point{XVal: -4, YVal: 6, ZVal: 8}
+	expected := Point{XVal: -8, YVal: 18, ZVal: 32}
 	actual, err := transform.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
@@ -82,8 +81,8 @@ func TestPointMatrixScaling(t *testing.T) {
 
 func TestVectorMatrixScaling(t *testing.T) {
 	transform := Scaling(2, 3, 4)
-	v := tuple.Vector{XVal: -4, YVal: 6, ZVal: 8}
-	expected := tuple.Vector{XVal: -8, YVal: 18, ZVal: 32}
+	v := Vector{XVal: -4, YVal: 6, ZVal: 8}
+	expected := Vector{XVal: -8, YVal: 18, ZVal: 32}
 	actual, err := transform.MultiplyTuple(&v)
 	if err != nil {
 		t.Fatal(err)
@@ -100,8 +99,8 @@ func TestInverseMatrixScaling(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	v := tuple.Vector{XVal: -4, YVal: 6, ZVal: 8}
-	expected := tuple.Vector{XVal: -2, YVal: 2, ZVal: 2}
+	v := Vector{XVal: -4, YVal: 6, ZVal: 8}
+	expected := Vector{XVal: -2, YVal: 2, ZVal: 2}
 	actual, err := inv.MultiplyTuple(&v)
 	if err != nil {
 		t.Fatal(err)
@@ -114,8 +113,8 @@ func TestInverseMatrixScaling(t *testing.T) {
 
 func TestMatrixReflection(t *testing.T) {
 	transform := Scaling(-1, 1, 1)
-	p := tuple.Point{XVal: 2, YVal: 3, ZVal: 4}
-	expected := tuple.Point{XVal: -2, YVal: 3, ZVal: 4}
+	p := Point{XVal: 2, YVal: 3, ZVal: 4}
+	expected := Point{XVal: -2, YVal: 3, ZVal: 4}
 	actual, err := transform.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
@@ -129,14 +128,14 @@ func TestMatrixReflection(t *testing.T) {
 func TestMatrixRotation(t *testing.T) {
 	tests := []struct {
 		transform        Matrix
-		origin, expected tuple.Point
+		origin, expected Point
 	}{
-		{RotationX(math.Pi / 4), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: math.Sqrt(2) / 2}},
-		{RotationX(math.Pi / 2), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: 0, YVal: 0, ZVal: 1}},
-		{RotationY(math.Pi / 4), tuple.Point{XVal: 0, YVal: 0, ZVal: 1}, tuple.Point{XVal: math.Sqrt(2) / 2, YVal: 0, ZVal: math.Sqrt(2) / 2}},
-		{RotationY(math.Pi / 2), tuple.Point{XVal: 0, YVal: 0, ZVal: 1}, tuple.Point{XVal: 1, YVal: 0, ZVal: 0}},
-		{RotationZ(math.Pi / 4), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: -math.Sqrt(2) / 2, YVal: math.Sqrt(2) / 2, ZVal: 0}},
-		{RotationZ(math.Pi / 2), tuple.Point{XVal: 0, YVal: 1, ZVal: 0}, tuple.Point{XVal: -1, YVal: 0, ZVal: 0}},
+		{RotationX(math.Pi / 4), Point{XVal: 0, YVal: 1, ZVal: 0}, Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: math.Sqrt(2) / 2}},
+		{RotationX(math.Pi / 2), Point{XVal: 0, YVal: 1, ZVal: 0}, Point{XVal: 0, YVal: 0, ZVal: 1}},
+		{RotationY(math.Pi / 4), Point{XVal: 0, YVal: 0, ZVal: 1}, Point{XVal: math.Sqrt(2) / 2, YVal: 0, ZVal: math.Sqrt(2) / 2}},
+		{RotationY(math.Pi / 2), Point{XVal: 0, YVal: 0, ZVal: 1}, Point{XVal: 1, YVal: 0, ZVal: 0}},
+		{RotationZ(math.Pi / 4), Point{XVal: 0, YVal: 1, ZVal: 0}, Point{XVal: -math.Sqrt(2) / 2, YVal: math.Sqrt(2) / 2, ZVal: 0}},
+		{RotationZ(math.Pi / 2), Point{XVal: 0, YVal: 1, ZVal: 0}, Point{XVal: -1, YVal: 0, ZVal: 0}},
 	}
 
 	for _, test := range tests {
@@ -149,13 +148,13 @@ func TestMatrixRotation(t *testing.T) {
 }
 
 func TestInverseMatrixXRotation(t *testing.T) {
-	p := tuple.Point{XVal: 0, YVal: 1, ZVal: 0}
+	p := Point{XVal: 0, YVal: 1, ZVal: 0}
 	halfQuarter := RotationX(math.Pi / 4)
 	inv, err := halfQuarter.Inverse()
 	if err != nil {
 		t.Fatal(err)
 	}
-	expectedHalf := tuple.Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: -math.Sqrt(2) / 2}
+	expectedHalf := Point{XVal: 0, YVal: math.Sqrt(2) / 2, ZVal: -math.Sqrt(2) / 2}
 	actualHalf, err := inv.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
@@ -166,14 +165,14 @@ func TestInverseMatrixXRotation(t *testing.T) {
 func TestShearing(t *testing.T) {
 	tests := []struct {
 		transform        Matrix
-		origin, expected tuple.Point
+		origin, expected Point
 	}{
-		{Shearing(1, 0, 0, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 5, YVal: 3, ZVal: 4}},
-		{Shearing(0, 1, 0, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 6, YVal: 3, ZVal: 4}},
-		{Shearing(0, 0, 1, 0, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 5, ZVal: 4}},
-		{Shearing(0, 0, 0, 1, 0, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 7, ZVal: 4}},
-		{Shearing(0, 0, 0, 0, 1, 0), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 3, ZVal: 6}},
-		{Shearing(0, 0, 0, 0, 0, 1), tuple.Point{XVal: 2, YVal: 3, ZVal: 4}, tuple.Point{XVal: 2, YVal: 3, ZVal: 7}},
+		{Shearing(1, 0, 0, 0, 0, 0), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 5, YVal: 3, ZVal: 4}},
+		{Shearing(0, 1, 0, 0, 0, 0), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 6, YVal: 3, ZVal: 4}},
+		{Shearing(0, 0, 1, 0, 0, 0), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 2, YVal: 5, ZVal: 4}},
+		{Shearing(0, 0, 0, 1, 0, 0), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 2, YVal: 7, ZVal: 4}},
+		{Shearing(0, 0, 0, 0, 1, 0), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 2, YVal: 3, ZVal: 6}},
+		{Shearing(0, 0, 0, 0, 0, 1), Point{XVal: 2, YVal: 3, ZVal: 4}, Point{XVal: 2, YVal: 3, ZVal: 7}},
 	}
 
 	for _, test := range tests {
@@ -187,26 +186,26 @@ func TestShearing(t *testing.T) {
 }
 
 func TestTransformationSequence(t *testing.T) {
-	p := tuple.Point{XVal: 1, YVal: 0, ZVal: 1}
+	p := Point{XVal: 1, YVal: 0, ZVal: 1}
 	a := RotationX(math.Pi / 2)
 	b := Scaling(5, 5, 5)
 	c := Translation(10, 5, 7)
 
-	expected := tuple.Point{XVal: 1, YVal: -1, ZVal: 0}
+	expected := Point{XVal: 1, YVal: -1, ZVal: 0}
 	p2, err := a.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
 	assertEquals(t, &expected, p2)
 
-	expected = tuple.Point{XVal: 5, YVal: -5, ZVal: 0}
+	expected = Point{XVal: 5, YVal: -5, ZVal: 0}
 	p3, err := b.MultiplyTuple(p2)
 	if err != nil {
 		t.Fatal(err)
 	}
 	assertEquals(t, &expected, p3)
 
-	expected = tuple.Point{XVal: 15, YVal: 0, ZVal: 7}
+	expected = Point{XVal: 15, YVal: 0, ZVal: 7}
 	p4, err := c.MultiplyTuple(p3)
 	if err != nil {
 		t.Fatal(err)
@@ -215,13 +214,13 @@ func TestTransformationSequence(t *testing.T) {
 }
 
 func TestChainedTransformations(t *testing.T) {
-	p := tuple.Point{XVal: 1, YVal: 0, ZVal: 1}
+	p := Point{XVal: 1, YVal: 0, ZVal: 1}
 	a := RotationX(math.Pi / 2)
 	b := Scaling(5, 5, 5)
 	c := Translation(10, 5, 7)
 
 	transform := c.Multiply(b.Multiply(a))
-	expected := tuple.Point{XVal: 15, YVal: 0, ZVal: 7}
+	expected := Point{XVal: 15, YVal: 0, ZVal: 7}
 	actual, err := transform.MultiplyTuple(&p)
 	if err != nil {
 		t.Fatal(err)

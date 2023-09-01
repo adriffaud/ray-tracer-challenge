@@ -1,4 +1,4 @@
-package tuple
+package primitives
 
 // Point is a struct representing a 3D point
 type Point struct{ XVal, YVal, ZVal float64 }

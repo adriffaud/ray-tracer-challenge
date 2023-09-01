@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/adriffaud/ray-tracer-challenge/color"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
 )
 
 func TestCanvasCreation(t *testing.T) {

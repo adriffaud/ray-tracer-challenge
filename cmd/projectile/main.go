@@ -1,33 +1,33 @@
 package main
 
 import (
-	"github.com/adriffaud/ray-tracer-challenge/canvas"
-	"github.com/adriffaud/ray-tracer-challenge/color"
-	"github.com/adriffaud/ray-tracer-challenge/tuple"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/canvas"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
 type Projectile struct {
-	Position tuple.Tuple
-	Velocity tuple.Tuple
+	Position primitives.Tuple
+	Velocity primitives.Tuple
 }
 
 type Environment struct {
-	Gravity tuple.Vector
-	Wind    tuple.Vector
+	Gravity primitives.Vector
+	Wind    primitives.Vector
 }
 
 func (p *Projectile) Tick(env Environment) {
-	position, err := tuple.Add(p.Position, p.Velocity)
+	position, err := primitives.Add(p.Position, p.Velocity)
 	if err != nil {
 		panic(err)
 	}
 	p.Position = position
 
-	intermediate, err := tuple.Add(p.Velocity, &env.Gravity)
+	intermediate, err := primitives.Add(p.Velocity, &env.Gravity)
 	if err != nil {
 		panic(err)
 	}
-	velocity, err := tuple.Add(intermediate, &env.Wind)
+	velocity, err := primitives.Add(intermediate, &env.Wind)
 	if err != nil {
 		panic(err)
 	}
@@ -35,19 +35,19 @@ func (p *Projectile) Tick(env Environment) {
 }
 
 func main() {
-	velocity, err := tuple.Multiply(tuple.Normalize(&tuple.Vector{XVal: 1, YVal: 1.8, ZVal: 0}), 11.25)
+	velocity, err := primitives.Multiply(primitives.Normalize(&primitives.Vector{XVal: 1, YVal: 1.8, ZVal: 0}), 11.25)
 	if err != nil {
 		panic(err)
 	}
 
 	p := Projectile{
-		Position: &tuple.Point{XVal: 0, YVal: 1, ZVal: 0},
+		Position: &primitives.Point{XVal: 0, YVal: 1, ZVal: 0},
 		Velocity: velocity,
 	}
 
 	env := Environment{
-		Gravity: tuple.Vector{XVal: 0, YVal: -0.1, ZVal: 0},
-		Wind:    tuple.Vector{XVal: -0.01, YVal: 0, ZVal: 0},
+		Gravity: primitives.Vector{XVal: 0, YVal: -0.1, ZVal: 0},
+		Wind:    primitives.Vector{XVal: -0.01, YVal: 0, ZVal: 0},
 	}
 
 	c := canvas.NewCanvas(900, 550)

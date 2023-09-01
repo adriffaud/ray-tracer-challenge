@@ -8,7 +8,7 @@ import (
 	"math"
 	"os"
 
-	rtc_color "github.com/adriffaud/ray-tracer-challenge/color"
+	rtc_color "github.com/adriffaud/ray-tracer-challenge/pkg/color"
 )
 
 type Canvas struct {

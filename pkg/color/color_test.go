@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/adriffaud/ray-tracer-challenge/float"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
 func assertEquals(t *testing.T, c1, c2 Color) {
