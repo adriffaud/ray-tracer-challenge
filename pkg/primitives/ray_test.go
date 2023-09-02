@@ -39,3 +39,38 @@ func TestComputingPointFromDistance(t *testing.T) {
 		}
 	}
 }
+
+func TestRayTranslation(t *testing.T) {
+	r := Ray{
+		Origin:    Point{X: 1, Y: 2, Z: 3},
+		Direction: Vector{Y: 1},
+	}
+	m := Translation(3, 4, 5)
+	r2 := r.Transform(m)
+	expected_origin := Point{X: 4, Y: 6, Z: 8}
+
+	if !reflect.DeepEqual(r2.Origin, expected_origin) {
+		t.Fatalf("expected %+v. got=%+v", expected_origin, r2.Origin)
+	}
+	if !reflect.DeepEqual(r2.Direction, r.Direction) {
+		t.Fatalf("expected %+v. got=%+v", r.Direction, r2.Direction)
+	}
+}
+
+func TestRayScaling(t *testing.T) {
+	r := Ray{
+		Origin:    Point{X: 1, Y: 2, Z: 3},
+		Direction: Vector{Y: 1},
+	}
+	m := Scaling(2, 3, 4)
+	r2 := r.Transform(m)
+	expected_origin := Point{X: 2, Y: 6, Z: 12}
+	expected_direction := Vector{Y: 3}
+
+	if !reflect.DeepEqual(r2.Origin, expected_origin) {
+		t.Fatalf("expected %+v. got=%+v", expected_origin, r2.Origin)
+	}
+	if !reflect.DeepEqual(r2.Direction, expected_direction) {
+		t.Fatalf("expected %+v. got=%+v", expected_direction, r2.Direction)
+	}
+}
