@@ -6,8 +6,8 @@ import (
 )
 
 func TestRayCreation(t *testing.T) {
-	origin := Point{XVal: 1, YVal: 2, ZVal: 3}
-	direction := Vector{XVal: 4, YVal: 5, ZVal: 6}
+	origin := Point{X: 1, Y: 2, Z: 3}
+	direction := Vector{X: 4, Y: 5, Z: 6}
 	r := Ray{Origin: origin, Direction: direction}
 
 	if r.Origin != origin {
@@ -20,25 +20,22 @@ func TestRayCreation(t *testing.T) {
 
 func TestComputingPointFromDistance(t *testing.T) {
 	r := Ray{
-		Point{XVal: 2, YVal: 3, ZVal: 4},
-		Vector{XVal: 1, YVal: 0, ZVal: 0},
+		Point{X: 2, Y: 3, Z: 4},
+		Vector{X: 1},
 	}
 
 	tests := map[float64]Point{
-		0:   {XVal: 2, YVal: 3, ZVal: 4},
-		1:   {XVal: 3, YVal: 3, ZVal: 4},
-		-1:  {XVal: 1, YVal: 3, ZVal: 4},
-		2.5: {XVal: 4.5, YVal: 3, ZVal: 4},
+		0:   {X: 2, Y: 3, Z: 4},
+		1:   {X: 3, Y: 3, Z: 4},
+		-1:  {X: 1, Y: 3, Z: 4},
+		2.5: {X: 4.5, Y: 3, Z: 4},
 	}
 
 	for time, expected := range tests {
-		actual, err := Position(r, time)
-		if err != nil {
-			t.Fatal(err)
-		}
+		actual := r.Position(time)
 
-		if !reflect.DeepEqual(actual, &expected) {
-			t.Fatalf("expected %+v. got=%+v", &expected, actual)
+		if !reflect.DeepEqual(actual, expected) {
+			t.Fatalf("expected %+v. got=%+v", expected, actual)
 		}
 	}
 }

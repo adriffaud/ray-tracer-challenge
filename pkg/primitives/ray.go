@@ -5,10 +5,8 @@ type Ray struct {
 	Direction Vector
 }
 
-func Position(r Ray, t float64) (Tuple, error) {
-	multiplied, err := Multiply(&r.Direction, t)
-	if err != nil {
-		return nil, err
-	}
-	return Add(&r.Origin, multiplied)
+func (r Ray) Position(t float64) Point {
+	multiplied := r.Direction.Multiply(t)
+	return r.Origin.Add(multiplied)
+}
 }

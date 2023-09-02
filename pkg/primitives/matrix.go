@@ -39,29 +39,6 @@ func (a Matrix) Multiply(b Matrix) Matrix {
 	return m
 }
 
-func (m Matrix) MultiplyTuple(t Tuple) (Tuple, error) {
-	switch t.W() {
-	case 0:
-		v := Vector{
-			XVal: m[0][0]*t.X() + m[0][1]*t.Y() + m[0][2]*t.Z(),
-			YVal: m[1][0]*t.X() + m[1][1]*t.Y() + m[1][2]*t.Z(),
-			ZVal: m[2][0]*t.X() + m[2][1]*t.Y() + m[2][2]*t.Z(),
-		}
-
-		return &v, nil
-	case 1:
-		p := Point{
-			XVal: m[0][0]*t.X() + m[0][1]*t.Y() + m[0][2]*t.Z() + m[0][3],
-			YVal: m[1][0]*t.X() + m[1][1]*t.Y() + m[1][2]*t.Z() + m[1][3],
-			ZVal: m[2][0]*t.X() + m[2][1]*t.Y() + m[2][2]*t.Z() + m[2][3],
-		}
-
-		return &p, nil
-	default:
-		return nil, errors.New("operation not allowed")
-	}
-}
-
 func (m Matrix) Transpose() Matrix {
 	t := NewMatrix(4)
 

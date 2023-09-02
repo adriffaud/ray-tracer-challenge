@@ -14,40 +14,40 @@ func TestSphereprimitivesIntersection(t *testing.T) {
 	}{
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{XVal: 0, YVal: 0, ZVal: -5},
-				Direction: primitives.Vector{XVal: 0, YVal: 0, ZVal: 1},
+				Origin:    primitives.Point{X: 0, Y: 0, Z: -5},
+				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{4.0, 6.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{XVal: 0, YVal: 1, ZVal: -5},
-				Direction: primitives.Vector{XVal: 0, YVal: 0, ZVal: 1},
+				Origin:    primitives.Point{X: 0, Y: 1, Z: -5},
+				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{5.0, 5.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{XVal: 0, YVal: 2, ZVal: -5},
-				Direction: primitives.Vector{XVal: 0, YVal: 0, ZVal: 1},
+				Origin:    primitives.Point{X: 0, Y: 2, Z: -5},
+				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{XVal: 0, YVal: 0, ZVal: 0},
-				Direction: primitives.Vector{XVal: 0, YVal: 0, ZVal: 1},
+				Origin:    primitives.Point{X: 0, Y: 0, Z: 0},
+				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{-1.0, 1.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{XVal: 0, YVal: 0, ZVal: 5},
-				Direction: primitives.Vector{XVal: 0, YVal: 0, ZVal: 1},
+				Origin:    primitives.Point{X: 0, Y: 0, Z: 5},
+				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{-6.0, -4.0},

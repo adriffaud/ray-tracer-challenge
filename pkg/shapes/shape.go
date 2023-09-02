@@ -1,7 +1,6 @@
 package shapes
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
@@ -10,14 +9,10 @@ import (
 type Shape struct{}
 
 func (s Shape) Intersect(r primitives.Ray) Intersections {
-	s2r, err := primitives.Sub(&r.Origin, &primitives.Point{XVal: 0, YVal: 0, ZVal: 0})
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	a := primitives.Dot(&r.Direction, &r.Direction)
-	b := 2 * primitives.Dot(&r.Direction, s2r)
-	c := primitives.Dot(s2r, s2r) - 1
+	s2r := r.Origin.SubPoint(primitives.Point{X: 0, Y: 0, Z: 0})
+	a := r.Direction.Dot(r.Direction)
+	b := 2 * r.Direction.Dot(s2r)
+	c := s2r.Dot(s2r) - 1
 
 	discriminant := b*b - 4*a*c
 
