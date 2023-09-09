@@ -1,6 +1,7 @@
 package shapes
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
@@ -14,40 +15,40 @@ func TestSphereprimitivesIntersection(t *testing.T) {
 	}{
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{X: 0, Y: 0, Z: -5},
-				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
+				Origin:    primitives.Point{Z: -5},
+				Direction: primitives.Vector{Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{4.0, 6.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{X: 0, Y: 1, Z: -5},
-				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
+				Origin:    primitives.Point{Y: 1, Z: -5},
+				Direction: primitives.Vector{Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{5.0, 5.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{X: 0, Y: 2, Z: -5},
-				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
+				Origin:    primitives.Point{Y: 2, Z: -5},
+				Direction: primitives.Vector{Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{X: 0, Y: 0, Z: 0},
-				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
+				Origin:    primitives.Point{},
+				Direction: primitives.Vector{Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{-1.0, 1.0},
 		},
 		{
 			r: primitives.Ray{
-				Origin:    primitives.Point{X: 0, Y: 0, Z: 5},
-				Direction: primitives.Vector{X: 0, Y: 0, Z: 1},
+				Origin:    primitives.Point{Z: 5},
+				Direction: primitives.Vector{Z: 1},
 			},
 			s:        Sphere(),
 			expected: []float64{-6.0, -4.0},
@@ -57,18 +58,61 @@ func TestSphereprimitivesIntersection(t *testing.T) {
 	for _, test := range tests {
 		xs := test.s.Intersect(test.r)
 
-		if len(xs) < len(test.expected) {
+		if len(xs) != len(test.expected) {
 			t.Fatalf("expected %d intersections. got=%d", len(test.expected), len(xs))
 		}
 		if len(xs) < 1 {
 			continue
 		}
 
-		if xs[0].Object != test.s {
-			t.Fatalf("expected first intersection to be at %f. got=%f", test.expected[0], xs[0])
+		if xs[0].T != test.expected[0] {
+			t.Fatalf("expected first intersection to be at %f. got=%f", test.expected[0], xs[0].T)
 		}
-		if xs[1].Object != test.s {
-			t.Fatalf("expected second intersection to be at %f. got=%f", test.expected[1], xs[1])
+		if xs[1].T != test.expected[1] {
+			t.Fatalf("expected second intersection to be at %f. got=%f", test.expected[1], xs[1].T)
 		}
+	}
+}
+
+func TestSphereDefaultTransformation(t *testing.T) {
+	s := Sphere()
+	expected := primitives.IdentityMatrix()
+
+	if !reflect.DeepEqual(s.Transform, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, s.Transform)
+	}
+}
+
+func TestScaledSphereRayIntersection(t *testing.T) {
+	r := primitives.Ray{
+		Origin:    primitives.Point{Z: -5},
+		Direction: primitives.Vector{Z: 1},
+	}
+	s := Sphere()
+	s.Transform = primitives.Scaling(2, 2, 2)
+	xs := s.Intersect(r)
+
+	if len(xs) != 2 {
+		t.Fatalf("expected 2 values. got=%d", len(xs))
+	}
+	if xs[0].T != 3 {
+		t.Fatalf("expected 3. got=%f", xs[0].T)
+	}
+	if xs[1].T != 7 {
+		t.Fatalf("expected 7. got=%f", xs[1].T)
+	}
+}
+
+func TestTranslatedSphereRayIntersection(t *testing.T) {
+	r := primitives.Ray{
+		Origin:    primitives.Point{Z: -5},
+		Direction: primitives.Vector{Z: 1},
+	}
+	s := Sphere()
+	s.Transform = primitives.Translation(5, 0, 0)
+	xs := s.Intersect(r)
+
+	if len(xs) != 0 {
+		t.Fatalf("expected no values. got=%d", len(xs))
 	}
 }

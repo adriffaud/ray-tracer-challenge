@@ -6,12 +6,20 @@ import (
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
-type Shape struct{}
+type Shape struct {
+	Transform primitives.Matrix
+}
 
 func (s Shape) Intersect(r primitives.Ray) Intersections {
-	s2r := r.Origin.SubPoint(primitives.Point{X: 0, Y: 0, Z: 0})
-	a := r.Direction.Dot(r.Direction)
-	b := 2 * r.Direction.Dot(s2r)
+	inv, err := s.Transform.Inverse()
+	if err != nil {
+		panic(err)
+	}
+	r2 := r.Transform(inv)
+
+	s2r := r2.Origin.SubPoint(primitives.Point{X: 0, Y: 0, Z: 0})
+	a := r2.Direction.Dot(r2.Direction)
+	b := 2 * r2.Direction.Dot(s2r)
 	c := s2r.Dot(s2r) - 1
 
 	discriminant := b*b - 4*a*c
