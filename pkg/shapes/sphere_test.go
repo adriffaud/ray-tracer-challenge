@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
@@ -148,4 +149,35 @@ func TestSphereNormalIsNormalized(t *testing.T) {
 	if !reflect.DeepEqual(n, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, n)
 	}
+}
+
+func assertEquals(t *testing.T, expected, actual primitives.Vector) {
+	if !float.ApproxEq(expected.X, actual.X) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+	if !float.ApproxEq(expected.Y, actual.Y) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+	if !float.ApproxEq(expected.Z, actual.Z) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
+	}
+}
+
+func TestTranslatedSphereNormal(t *testing.T) {
+	s := Sphere()
+	s.Transform = primitives.Translation(0, 1, 0)
+	n := s.NormalAt(primitives.Point{Y: 1.70711, Z: -0.70711})
+	expected := primitives.Vector{Y: 0.70711, Z: -0.70711}
+
+	assertEquals(t, expected, n)
+}
+
+func TestTranformedSphereNormal(t *testing.T) {
+	s := Sphere()
+	m := primitives.Scaling(1, 0.5, 1).Multiply(primitives.RotationZ(math.Pi / 5))
+	s.Transform = m
+	n := s.NormalAt(primitives.Point{Y: math.Sqrt(2) / 2, Z: -math.Sqrt(2) / 2})
+	expected := primitives.Vector{Y: 0.97014, Z: -0.24254}
+
+	assertEquals(t, expected, n)
 }

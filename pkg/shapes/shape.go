@@ -35,5 +35,14 @@ func (s Shape) Intersect(r primitives.Ray) Intersections {
 }
 
 func (s Shape) NormalAt(p primitives.Point) primitives.Vector {
-	return primitives.Vector(p)
+	inv, err := s.Transform.Inverse()
+	if err != nil {
+		panic(err)
+	}
+
+	objPoint := p.MultiplyMatrix(inv)
+	objNormal := objPoint.SubPoint(primitives.Point{})
+	worldNormal := objNormal.MultiplyMatrix(inv.Transpose())
+
+	return worldNormal.Normalize()
 }
