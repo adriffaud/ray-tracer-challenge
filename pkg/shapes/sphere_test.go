@@ -1,6 +1,7 @@
 package shapes
 
 import (
+	"math"
 	"reflect"
 	"testing"
 
@@ -114,5 +115,37 @@ func TestTranslatedSphereRayIntersection(t *testing.T) {
 
 	if len(xs) != 0 {
 		t.Fatalf("expected no values. got=%d", len(xs))
+	}
+}
+
+func TestSphereNormal(t *testing.T) {
+	s := Sphere()
+	tests := []struct {
+		n        primitives.Vector
+		expected primitives.Vector
+	}{
+		{s.NormalAt(primitives.Point{X: 1}), primitives.Vector{X: 1}},
+		{s.NormalAt(primitives.Point{Y: 1}), primitives.Vector{Y: 1}},
+		{s.NormalAt(primitives.Point{Z: 1}), primitives.Vector{Z: 1}},
+		{
+			s.NormalAt(primitives.Point{X: math.Sqrt(3) / 3, Y: math.Sqrt(3) / 3, Z: math.Sqrt(3) / 3}),
+			primitives.Vector{X: math.Sqrt(3) / 3, Y: math.Sqrt(3) / 3, Z: math.Sqrt(3) / 3},
+		},
+	}
+
+	for _, test := range tests {
+		if !reflect.DeepEqual(test.n, test.expected) {
+			t.Fatalf("expected %+v. got=%+v", test.expected, test.n)
+		}
+	}
+}
+
+func TestSphereNormalIsNormalized(t *testing.T) {
+	s := Sphere()
+	n := s.NormalAt(primitives.Point{X: math.Sqrt(3) / 3, Y: math.Sqrt(3) / 3, Z: math.Sqrt(3) / 3})
+	expected := n.Normalize()
+
+	if !reflect.DeepEqual(n, expected) {
+		t.Fatalf("expected %+v. got=%+v", expected, n)
 	}
 }

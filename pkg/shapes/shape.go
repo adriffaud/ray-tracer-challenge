@@ -33,3 +33,7 @@ func (s Shape) Intersect(r primitives.Ray) Intersections {
 		{T: (-b + math.Sqrt(discriminant)) / (2 * a), Object: s},
 	}
 }
+
+func (s Shape) NormalAt(p primitives.Point) primitives.Vector {
+	return primitives.Vector(p)
+}
