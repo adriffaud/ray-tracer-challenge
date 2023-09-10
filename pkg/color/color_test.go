@@ -40,7 +40,7 @@ func TestColorAddition(t *testing.T) {
 	c2 := Color{R: 0.7, G: 0.1, B: 0.25}
 	expected := Color{1.6, 0.7, 1.0}
 
-	actual := Add(c1, c2)
+	actual := c1.Add(c2)
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("expected %+v. got=%+v", actual, expected)
 	}
@@ -51,7 +51,7 @@ func TestColorSubtraction(t *testing.T) {
 	c2 := Color{0.7, 0.1, 0.25}
 	expected := Color{0.2, 0.5, 0.5}
 
-	actual := Sub(c1, c2)
+	actual := c1.Sub(c2)
 	assertEquals(t, actual, expected)
 }
 
@@ -59,7 +59,7 @@ func TestColorScalarMultiplication(t *testing.T) {
 	c := Color{R: 0.2, G: 0.3, B: 0.4}
 	expected := Color{R: 0.4, G: 0.6, B: 0.8}
 
-	actual := MultiplyByScalar(c, 2)
+	actual := c.MultiplyScalar(2)
 	assertEquals(t, actual, expected)
 }
 
@@ -68,6 +68,6 @@ func TestColorMultiplication(t *testing.T) {
 	c2 := Color{R: 0.9, G: 1, B: 0.1}
 	expected := Color{R: 0.9, G: 0.2, B: 0.04}
 
-	actual := Multiply(c1, c2)
+	actual := c1.Multiply(c2)
 	assertEquals(t, actual, expected)
 }

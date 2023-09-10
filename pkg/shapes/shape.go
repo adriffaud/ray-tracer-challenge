@@ -3,11 +3,13 @@ package shapes
 import (
 	"math"
 
+	"github.com/adriffaud/ray-tracer-challenge/pkg/component"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
 type Shape struct {
 	Transform primitives.Matrix
+	Material  component.Material
 }
 
 func (s Shape) Intersect(r primitives.Ray) Intersections {
