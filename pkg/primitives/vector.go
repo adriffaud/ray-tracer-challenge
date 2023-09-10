@@ -54,3 +54,7 @@ func (v Vector) MultiplyMatrix(m Matrix) Vector {
 		Z: m[2][0]*v.X + m[2][1]*v.Y + m[2][2]*v.Z,
 	}
 }
+
+func (v Vector) Reflect(n Vector) Vector {
+	return v.Sub(n.Multiply(2 * v.Dot(n)))
+}

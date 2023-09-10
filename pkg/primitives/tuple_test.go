@@ -4,6 +4,8 @@ import (
 	"math"
 	"reflect"
 	"testing"
+
+	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
 func TestTupleAddition(t *testing.T) {
@@ -218,5 +220,28 @@ func TestTupleCrossProduct(t *testing.T) {
 	actual2 := vector2.Cross(vector1)
 	if !reflect.DeepEqual(actual2, expected2) {
 		t.Fatalf("expected %+v. got=%+v", expected2, actual2)
+	}
+}
+
+func TestVectorReflection(t *testing.T) {
+	tests := []struct {
+		in, n, expected Vector
+	}{
+		{Vector{X: 1, Y: -1}, Vector{Y: 1}, Vector{X: 1, Y: 1}},
+		{Vector{Y: -1}, Vector{X: math.Sqrt(2) / 2, Y: math.Sqrt(2) / 2}, Vector{X: 1}},
+	}
+
+	for _, test := range tests {
+		r := test.in.Reflect(test.n)
+
+		if !float.ApproxEq(test.expected.X, r.X) {
+			t.Fatalf("expected %+v. got=%+v", test.expected.X, r.X)
+		}
+		if !float.ApproxEq(test.expected.Y, r.Y) {
+			t.Fatalf("expected %+v. got=%+v", test.expected.Y, r.Y)
+		}
+		if !float.ApproxEq(test.expected.Z, r.Z) {
+			t.Fatalf("expected %+v. got=%+v", test.expected.Z, r.Z)
+		}
 	}
 }
