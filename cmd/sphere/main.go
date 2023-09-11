@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/adriffaud/ray-tracer-challenge/pkg/canvas"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/component"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/shapes"
 )
@@ -19,8 +20,14 @@ func main() {
 	rayOrigin := primitives.Point{Z: -5}
 
 	c := canvas.NewCanvas(CANVAS_PIXELS, CANVAS_PIXELS)
-	color := color.Color{R: 1}
 	shape := shapes.Sphere()
+	shape.Material = component.NewMaterial()
+	shape.Material.Color = color.Color{R: 1, G: 0.2, B: 1}
+
+	light := component.Light{
+		Position:  primitives.Point{X: -10, Y: 10, Z: -10},
+		Intensity: color.Color{R: 1, G: 1, B: 1},
+	}
 
 	for y := 0; y < CANVAS_PIXELS; y++ {
 		worldY := HALF - PIXEL_SIZE*float64(y)
@@ -35,9 +42,15 @@ func main() {
 
 			r := primitives.Ray{Origin: rayOrigin, Direction: direction}
 			xs := shape.Intersect(r)
+			hit := xs.Hit()
 
-			if xs.Hit().T != 0 {
-				c.WritePixel(x, y, color)
+			if hit.T != 0 {
+				p := r.Position(hit.T)
+				normal := hit.Object.NormalAt(p)
+				eye := r.Direction.Negate()
+				col := component.Lighting(hit.Object.Material, light, p, eye, normal)
+
+				c.WritePixel(x, y, col)
 			}
 		}
 	}
