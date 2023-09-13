@@ -67,11 +67,11 @@ func TestSphereprimitivesIntersection(t *testing.T) {
 			continue
 		}
 
-		if xs[0].T != test.expected[0] {
-			t.Fatalf("expected first intersection to be at %f. got=%f", test.expected[0], xs[0].T)
+		if xs[0].Distance != test.expected[0] {
+			t.Fatalf("expected first intersection to be at %f. got=%f", test.expected[0], xs[0].Distance)
 		}
-		if xs[1].T != test.expected[1] {
-			t.Fatalf("expected second intersection to be at %f. got=%f", test.expected[1], xs[1].T)
+		if xs[1].Distance != test.expected[1] {
+			t.Fatalf("expected second intersection to be at %f. got=%f", test.expected[1], xs[1].Distance)
 		}
 	}
 }
@@ -97,11 +97,11 @@ func TestScaledSphereRayIntersection(t *testing.T) {
 	if len(xs) != 2 {
 		t.Fatalf("expected 2 values. got=%d", len(xs))
 	}
-	if xs[0].T != 3 {
-		t.Fatalf("expected 3. got=%f", xs[0].T)
+	if xs[0].Distance != 3 {
+		t.Fatalf("expected 3. got=%f", xs[0].Distance)
 	}
-	if xs[1].T != 7 {
-		t.Fatalf("expected 7. got=%f", xs[1].T)
+	if xs[1].Distance != 7 {
+		t.Fatalf("expected 7. got=%f", xs[1].Distance)
 	}
 }
 

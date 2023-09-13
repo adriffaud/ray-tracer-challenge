@@ -30,8 +30,8 @@ func (s Shape) Intersect(r primitives.Ray) Intersections {
 	}
 
 	return Intersections{
-		{T: (-b - math.Sqrt(discriminant)) / (2 * a), Object: s},
-		{T: (-b + math.Sqrt(discriminant)) / (2 * a), Object: s},
+		{Distance: (-b - math.Sqrt(discriminant)) / (2 * a), Object: s},
+		{Distance: (-b + math.Sqrt(discriminant)) / (2 * a), Object: s},
 	}
 }
 

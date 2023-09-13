@@ -8,10 +8,10 @@ import (
 
 func TestIntersectionStruct(t *testing.T) {
 	s := Sphere()
-	i := Intersection{T: 3.5, Object: s}
+	i := Intersection{Distance: 3.5, Object: s}
 
-	if i.T != 3.5 {
-		t.Fatalf("expected 3.5. got=%f", i.T)
+	if i.Distance != 3.5 {
+		t.Fatalf("expected 3.5. got=%f", i.Distance)
 	}
 
 	if !reflect.DeepEqual(i.Object, s) {
@@ -21,19 +21,19 @@ func TestIntersectionStruct(t *testing.T) {
 
 func TestIntersectionAggregation(t *testing.T) {
 	s := Sphere()
-	i1 := Intersection{T: 1, Object: s}
-	i2 := Intersection{T: 2, Object: s}
+	i1 := Intersection{Distance: 1, Object: s}
+	i2 := Intersection{Distance: 2, Object: s}
 	xs := Intersections{i1, i2}
 
 	if len(xs) < 2 {
 		t.Fatalf("expected 2 values. got=%d", len(xs))
 	}
 
-	if xs[0].T != 1 {
-		t.Fatalf("expected value to be 1. got=%f", xs[0].T)
+	if xs[0].Distance != 1 {
+		t.Fatalf("expected value to be 1. got=%f", xs[0].Distance)
 	}
-	if xs[1].T != 2 {
-		t.Fatalf("expected value to be 2. got=%f", xs[0].T)
+	if xs[1].Distance != 2 {
+		t.Fatalf("expected value to be 2. got=%f", xs[0].Distance)
 	}
 }
 
@@ -45,8 +45,8 @@ type test struct {
 
 func TestIntersectionHit(t *testing.T) {
 	s := Sphere()
-	i1 := Intersection{T: 1, Object: s}
-	i2 := Intersection{T: 2, Object: s}
+	i1 := Intersection{Distance: 1, Object: s}
+	i2 := Intersection{Distance: 2, Object: s}
 	xs := Intersections{i2, i1}
 
 	i := xs.Hit()
@@ -55,8 +55,8 @@ func TestIntersectionHit(t *testing.T) {
 	}
 
 	s = Sphere()
-	i1 = Intersection{T: -1, Object: s}
-	i2 = Intersection{T: 1, Object: s}
+	i1 = Intersection{Distance: -1, Object: s}
+	i2 = Intersection{Distance: 1, Object: s}
 	xs = Intersections{i2, i1}
 	i = xs.Hit()
 	if !reflect.DeepEqual(i, i2) {
@@ -64,8 +64,8 @@ func TestIntersectionHit(t *testing.T) {
 	}
 
 	s = Sphere()
-	i1 = Intersection{T: -2, Object: s}
-	i2 = Intersection{T: -1, Object: s}
+	i1 = Intersection{Distance: -2, Object: s}
+	i2 = Intersection{Distance: -1, Object: s}
 	xs = Intersections{i2, i1}
 	i = xs.Hit()
 	fmt.Printf("%+v", i)
@@ -74,10 +74,10 @@ func TestIntersectionHit(t *testing.T) {
 	// }
 
 	s = Sphere()
-	i1 = Intersection{T: 5, Object: s}
-	i2 = Intersection{T: 7, Object: s}
-	i3 := Intersection{T: -3, Object: s}
-	i4 := Intersection{T: 2, Object: s}
+	i1 = Intersection{Distance: 5, Object: s}
+	i2 = Intersection{Distance: 7, Object: s}
+	i3 := Intersection{Distance: -3, Object: s}
+	i4 := Intersection{Distance: 2, Object: s}
 	xs = Intersections{i1, i2, i3, i4}
 	i = xs.Hit()
 	if !reflect.DeepEqual(i, i4) {

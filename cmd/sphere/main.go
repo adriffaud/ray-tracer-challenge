@@ -44,8 +44,8 @@ func main() {
 			xs := shape.Intersect(r)
 			hit := xs.Hit()
 
-			if hit.T != 0 {
-				p := r.Position(hit.T)
+			if hit.Distance != 0 {
+				p := r.Position(hit.Distance)
 				normal := hit.Object.NormalAt(p)
 				eye := r.Direction.Negate()
 				col := component.Lighting(hit.Object.Material, light, p, eye, normal)
