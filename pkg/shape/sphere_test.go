@@ -1,11 +1,10 @@
-package shapes
+package shape
 
 import (
 	"math"
 	"reflect"
 	"testing"
 
-	"github.com/adriffaud/ray-tracer-challenge/pkg/component"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
@@ -185,7 +184,7 @@ func TestTranformedSphereNormal(t *testing.T) {
 
 func TestSphereDefaultMaterial(t *testing.T) {
 	s := Sphere()
-	expected := component.NewMaterial()
+	expected := primitives.NewMaterial()
 
 	if !reflect.DeepEqual(s.Material, expected) {
 		t.Fatalf("expected %+v. got=%+v", expected, s.Material)

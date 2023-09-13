@@ -1,4 +1,4 @@
-package component
+package primitives
 
 import "github.com/adriffaud/ray-tracer-challenge/pkg/color"
 

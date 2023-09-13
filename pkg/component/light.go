@@ -12,7 +12,7 @@ type Light struct {
 	Position  primitives.Point
 }
 
-func Lighting(m Material, l Light, p primitives.Point, eye, normal primitives.Vector) color.Color {
+func Lighting(m primitives.Material, l Light, p primitives.Point, eye, normal primitives.Vector) color.Color {
 	effective := m.Color.Multiply(l.Intensity)
 	lightv := l.Position.SubPoint(p).Normalize()
 	ambient := effective.MultiplyScalar(m.Ambient)

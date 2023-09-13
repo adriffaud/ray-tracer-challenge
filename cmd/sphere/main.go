@@ -5,7 +5,7 @@ import (
 	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/component"
 	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/shapes"
+	"github.com/adriffaud/ray-tracer-challenge/pkg/shape"
 )
 
 const (
@@ -20,8 +20,8 @@ func main() {
 	rayOrigin := primitives.Point{Z: -5}
 
 	c := canvas.NewCanvas(CANVAS_PIXELS, CANVAS_PIXELS)
-	shape := shapes.Sphere()
-	shape.Material = component.NewMaterial()
+	shape := shape.Sphere()
+	shape.Material = primitives.NewMaterial()
 	shape.Material.Color = color.Color{R: 1, G: 0.2, B: 1}
 
 	light := component.Light{
