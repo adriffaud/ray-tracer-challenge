@@ -1,7 +1,6 @@
 package shape
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -49,7 +48,7 @@ func TestIntersectionHit(t *testing.T) {
 	i2 := Intersection{Distance: 2, Object: s}
 	xs := Intersections{i2, i1}
 
-	i := xs.Hit()
+	i, _ := xs.Hit()
 	if !reflect.DeepEqual(i, i1) {
 		t.Fatalf("expected %+v. got=%+v", i1, i)
 	}
@@ -58,7 +57,7 @@ func TestIntersectionHit(t *testing.T) {
 	i1 = Intersection{Distance: -1, Object: s}
 	i2 = Intersection{Distance: 1, Object: s}
 	xs = Intersections{i2, i1}
-	i = xs.Hit()
+	i, _ = xs.Hit()
 	if !reflect.DeepEqual(i, i2) {
 		t.Fatalf("expected %+v. got=%+v", i2, i)
 	}
@@ -67,11 +66,10 @@ func TestIntersectionHit(t *testing.T) {
 	i1 = Intersection{Distance: -2, Object: s}
 	i2 = Intersection{Distance: -1, Object: s}
 	xs = Intersections{i2, i1}
-	i = xs.Hit()
-	fmt.Printf("%+v", i)
-	// if i != nil {
-	// 	t.Fatalf("expected nil. got=%+v", i)
-	// }
+	_, hit := xs.Hit()
+	if hit {
+		t.Fatal("expected no hit")
+	}
 
 	s = Sphere()
 	i1 = Intersection{Distance: 5, Object: s}
@@ -79,7 +77,7 @@ func TestIntersectionHit(t *testing.T) {
 	i3 := Intersection{Distance: -3, Object: s}
 	i4 := Intersection{Distance: 2, Object: s}
 	xs = Intersections{i1, i2, i3, i4}
-	i = xs.Hit()
+	i, _ = xs.Hit()
 	if !reflect.DeepEqual(i, i4) {
 		t.Fatalf("expected %+v. got=%+v", i4, i)
 	}

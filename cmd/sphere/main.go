@@ -42,13 +42,13 @@ func main() {
 
 			r := primitives.Ray{Origin: rayOrigin, Direction: direction}
 			xs := shape.Intersect(r)
-			hit := xs.Hit()
+			i, hit := xs.Hit()
 
-			if hit.Distance != 0 {
-				p := r.Position(hit.Distance)
-				normal := hit.Object.NormalAt(p)
+			if hit {
+				p := r.Position(i.Distance)
+				normal := i.Object.NormalAt(p)
 				eye := r.Direction.Negate()
-				col := component.Lighting(hit.Object.Material, light, p, eye, normal)
+				col := component.Lighting(i.Object.Material, light, p, eye, normal)
 
 				c.WritePixel(x, y, col)
 			}
