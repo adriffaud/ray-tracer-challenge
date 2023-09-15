@@ -2,7 +2,17 @@ package shape
 
 import (
 	"sort"
+
+	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
+
+type Computations struct {
+	Intersection
+	Inside  bool
+	Point   primitives.Point
+	EyeV    primitives.Vector
+	NormalV primitives.Vector
+}
 
 type Intersection struct {
 	Object   Shape
@@ -10,6 +20,24 @@ type Intersection struct {
 }
 
 type Intersections []Intersection
+
+func (i Intersection) PrepareComputations(r primitives.Ray) Computations {
+	p := r.Position(i.Distance)
+
+	comps := Computations{
+		Intersection: i,
+		Point:        p,
+		EyeV:         r.Direction.Negate(),
+		NormalV:      Sphere().NormalAt(p),
+	}
+
+	if comps.NormalV.Dot(comps.EyeV) < 0 {
+		comps.Inside = true
+		comps.NormalV = comps.NormalV.Negate()
+	}
+
+	return comps
+}
 
 func (i Intersections) Len() int { return len(i) }
 

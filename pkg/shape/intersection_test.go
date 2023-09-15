@@ -3,6 +3,8 @@ package shape
 import (
 	"reflect"
 	"testing"
+
+	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
 func TestIntersectionStruct(t *testing.T) {
@@ -80,5 +82,71 @@ func TestIntersectionHit(t *testing.T) {
 	i, _ = xs.Hit()
 	if !reflect.DeepEqual(i, i4) {
 		t.Fatalf("expected %+v. got=%+v", i4, i)
+	}
+}
+
+func TestIntersectionPrecompute(t *testing.T) {
+	r := primitives.Ray{
+		Origin:    primitives.Point{Z: -5},
+		Direction: primitives.Vector{Z: 1},
+	}
+	shape := Sphere()
+	i := Intersection{Object: shape, Distance: 4}
+	comps := i.PrepareComputations(r)
+
+	if comps.Distance != i.Distance {
+		t.Fatalf("expected %f. got=%f", i.Distance, comps.Distance)
+	}
+
+	if !reflect.DeepEqual(comps.Object, i.Object) {
+		t.Fatalf("expected %+v. got=%+v", i.Object, comps.Object)
+	}
+
+	p := primitives.Point{Z: -1}
+	if !reflect.DeepEqual(comps.Point, p) {
+		t.Fatalf("expected %+v. got=%+v", p, comps.Point)
+	}
+
+	v := primitives.Vector{Z: -1}
+	if !reflect.DeepEqual(comps.EyeV, v) {
+		t.Fatalf("expected %+v. got=%+v", v, comps.EyeV)
+	}
+
+	n := primitives.Vector{Z: -1}
+	if !reflect.DeepEqual(comps.NormalV, n) {
+		t.Fatalf("expected %+v. got=%+v", n, comps.NormalV)
+	}
+
+	if comps.Inside {
+		t.Fatal("expected false")
+	}
+}
+
+func TestHitInsideIntersection(t *testing.T) {
+	r := primitives.Ray{
+		Origin:    primitives.Point{},
+		Direction: primitives.Vector{Z: 1},
+	}
+	shape := Sphere()
+	i := Intersection{Object: shape, Distance: 1}
+	comps := i.PrepareComputations(r)
+
+	p := primitives.Point{Z: 1}
+	if !reflect.DeepEqual(comps.Point, p) {
+		t.Fatalf("expected %+v. got=%+v", p, comps.Point)
+	}
+
+	v := primitives.Vector{Z: -1}
+	if !reflect.DeepEqual(comps.EyeV, v) {
+		t.Fatalf("expected %+v. got=%+v", v, comps.EyeV)
+	}
+
+	if !comps.Inside {
+		t.Fatal("expected to be true")
+	}
+
+	n := primitives.Vector{Z: -1}
+	if !reflect.DeepEqual(comps.NormalV, n) {
+		t.Fatalf("expected %+v. got=%+v", n, comps.NormalV)
 	}
 }

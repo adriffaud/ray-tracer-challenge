@@ -39,3 +39,17 @@ func (w World) Intersect(r primitives.Ray) shape.Intersections {
 
 	return i
 }
+
+func (w World) ShadeHit(comps shape.Computations) color.Color {
+	return Lighting(comps.Object.Material, w.Light, comps.Point, comps.EyeV, comps.NormalV)
+}
+
+func (w World) ColorAt(r primitives.Ray) color.Color {
+	xs := w.Intersect(r)
+	i, hit := xs.Hit()
+	if !hit {
+		return color.Color{}
+	}
+	comps := i.PrepareComputations(r)
+	return w.ShadeHit(comps)
+}
