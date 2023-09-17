@@ -152,15 +152,15 @@ func TestColors(t *testing.T) {
 
 func TestBehindRayIntersectionColor(t *testing.T) {
 	w := NewWorld()
-	outer := w.Objects[0]
-	outer.Material.Ambient = 1
-	inner := w.Objects[1]
-	inner.Material.Ambient = 1
+	w.Objects[0].Material.Ambient = 1
+	w.Objects[1].Material.Ambient = 1
 	r := primitives.Ray{
 		Origin:    primitives.Point{Z: 0.75},
 		Direction: primitives.Vector{Z: -1},
 	}
 	c := w.ColorAt(r)
+
+	inner := w.Objects[1]
 
 	if !float.ApproxEq(c.R, inner.Material.Color.R) {
 		t.Fatalf("expected %+v. got=%+v", inner.Material.Color, c)
