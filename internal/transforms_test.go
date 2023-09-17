@@ -182,3 +182,30 @@ func TestChainedTransformations(t *testing.T) {
 	actual := p.MultiplyMatrix(transform)
 	assertPointEquals(t, expected, actual)
 }
+
+func TestViewTransformationMatrix(t *testing.T) {
+	tests := []struct {
+		from, to Point
+		up       Vector
+		expected Matrix
+	}{
+		{Point{}, Point{Z: -1}, Vector{Y: 1}, IdentityMatrix()},
+		{Point{}, Point{Z: 1}, Vector{Y: 1}, Scaling(-1, 1, -1)},
+		{Point{Z: 8}, Point{}, Vector{Y: 1}, Translation(0, 0, -8)},
+		{Point{X: 1, Y: 3, Z: 2}, Point{X: 4, Y: -2, Z: 8}, Vector{X: 1, Y: 1}, Matrix{
+			{-0.50709, 0.50709, 0.67612, -2.36643},
+			{0.76772, 0.60609, 0.12122, -2.82843},
+			{-0.35857, 0.59761, -0.71714, 0},
+			{0, 0, 0, 1},
+		}},
+	}
+
+	for _, test := range tests {
+		transform := ViewTransform(test.from, test.to, test.up)
+
+		if !Eq(transform, test.expected) {
+			t.Fatalf("expected %+v. got=%+v", test.expected, transform)
+		}
+
+	}
+}

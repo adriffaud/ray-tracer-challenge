@@ -60,3 +60,18 @@ func Shearing(xy, xz, yx, yz, zx, zy float64) Matrix {
 	m[2][1] = zy
 	return m
 }
+
+func ViewTransform(from, to Point, up Vector) Matrix {
+	forward := to.SubPoint(from).Normalize()
+	left := forward.Cross(up.Normalize())
+	trueUp := left.Cross(forward)
+
+	orientation := Matrix{
+		{left.X, left.Y, left.Z, 0},
+		{trueUp.X, trueUp.Y, trueUp.Z, 0},
+		{-forward.X, -forward.Y, -forward.Z, 0},
+		{0, 0, 0, 1},
+	}
+
+	return orientation.Multiply(Translation(-from.X, -from.Y, -from.Z))
+}
