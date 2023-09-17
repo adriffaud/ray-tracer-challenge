@@ -1,17 +1,13 @@
-package shape
+package internal
 
-import (
-	"sort"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
-)
+import "sort"
 
 type Computations struct {
 	Intersection
 	Inside  bool
-	Point   primitives.Point
-	EyeV    primitives.Vector
-	NormalV primitives.Vector
+	Point   Point
+	EyeV    Vector
+	NormalV Vector
 }
 
 type Intersection struct {
@@ -21,7 +17,7 @@ type Intersection struct {
 
 type Intersections []Intersection
 
-func (i Intersection) PrepareComputations(r primitives.Ray) Computations {
+func (i Intersection) PrepareComputations(r Ray) Computations {
 	p := r.Position(i.Distance)
 
 	comps := Computations{

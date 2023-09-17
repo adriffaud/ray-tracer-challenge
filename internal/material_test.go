@@ -1,15 +1,13 @@
-package primitives
+package internal
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
 )
 
 func TestDefaultMaterial(t *testing.T) {
 	m := NewMaterial()
-	color := color.Color{R: 1, G: 1, B: 1}
+	color := Color{R: 1, G: 1, B: 1}
 
 	if !reflect.DeepEqual(m.Color, color) {
 		t.Fatalf("expected %+v. got=%+v", color, m.Color)

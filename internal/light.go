@@ -1,24 +1,19 @@
-package component
+package internal
 
-import (
-	"math"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
-)
+import "math"
 
 type Light struct {
-	Intensity color.Color
-	Position  primitives.Point
+	Intensity Color
+	Position  Point
 }
 
-func Lighting(m primitives.Material, l Light, p primitives.Point, eye, normal primitives.Vector) color.Color {
+func Lighting(m Material, l Light, p Point, eye, normal Vector) Color {
 	effective := m.Color.Multiply(l.Intensity)
 	lightv := l.Position.SubPoint(p).Normalize()
 	ambient := effective.MultiplyScalar(m.Ambient)
 	lightDotNormal := lightv.Dot(normal)
 
-	var diffuse, specular color.Color
+	var diffuse, specular Color
 
 	if lightDotNormal >= 0 {
 		diffuse = effective.MultiplyScalar(m.Diffuse * lightDotNormal)

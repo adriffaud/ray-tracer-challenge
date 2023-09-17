@@ -1,10 +1,8 @@
-package shape
+package internal
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
 )
 
 func TestIntersectionStruct(t *testing.T) {
@@ -86,9 +84,9 @@ func TestIntersectionHit(t *testing.T) {
 }
 
 func TestIntersectionPrecompute(t *testing.T) {
-	r := primitives.Ray{
-		Origin:    primitives.Point{Z: -5},
-		Direction: primitives.Vector{Z: 1},
+	r := Ray{
+		Origin:    Point{Z: -5},
+		Direction: Vector{Z: 1},
 	}
 	shape := Sphere()
 	i := Intersection{Object: shape, Distance: 4}
@@ -102,17 +100,17 @@ func TestIntersectionPrecompute(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", i.Object, comps.Object)
 	}
 
-	p := primitives.Point{Z: -1}
+	p := Point{Z: -1}
 	if !reflect.DeepEqual(comps.Point, p) {
 		t.Fatalf("expected %+v. got=%+v", p, comps.Point)
 	}
 
-	v := primitives.Vector{Z: -1}
+	v := Vector{Z: -1}
 	if !reflect.DeepEqual(comps.EyeV, v) {
 		t.Fatalf("expected %+v. got=%+v", v, comps.EyeV)
 	}
 
-	n := primitives.Vector{Z: -1}
+	n := Vector{Z: -1}
 	if !reflect.DeepEqual(comps.NormalV, n) {
 		t.Fatalf("expected %+v. got=%+v", n, comps.NormalV)
 	}
@@ -123,20 +121,20 @@ func TestIntersectionPrecompute(t *testing.T) {
 }
 
 func TestHitInsideIntersection(t *testing.T) {
-	r := primitives.Ray{
-		Origin:    primitives.Point{},
-		Direction: primitives.Vector{Z: 1},
+	r := Ray{
+		Origin:    Point{},
+		Direction: Vector{Z: 1},
 	}
 	shape := Sphere()
 	i := Intersection{Object: shape, Distance: 1}
 	comps := i.PrepareComputations(r)
 
-	p := primitives.Point{Z: 1}
+	p := Point{Z: 1}
 	if !reflect.DeepEqual(comps.Point, p) {
 		t.Fatalf("expected %+v. got=%+v", p, comps.Point)
 	}
 
-	v := primitives.Vector{Z: -1}
+	v := Vector{Z: -1}
 	if !reflect.DeepEqual(comps.EyeV, v) {
 		t.Fatalf("expected %+v. got=%+v", v, comps.EyeV)
 	}
@@ -145,7 +143,7 @@ func TestHitInsideIntersection(t *testing.T) {
 		t.Fatal("expected to be true")
 	}
 
-	n := primitives.Vector{Z: -1}
+	n := Vector{Z: -1}
 	if !reflect.DeepEqual(comps.NormalV, n) {
 		t.Fatalf("expected %+v. got=%+v", n, comps.NormalV)
 	}

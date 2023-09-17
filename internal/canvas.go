@@ -1,4 +1,4 @@
-package canvas
+package internal
 
 import (
 	"image"
@@ -7,33 +7,31 @@ import (
 	"log"
 	"math"
 	"os"
-
-	rtc_color "github.com/adriffaud/ray-tracer-challenge/pkg/color"
 )
 
 type Canvas struct {
-	Pixels [][]rtc_color.Color
+	Pixels [][]Color
 	Width  int
 	Height int
 }
 
 // WritePixel sets the given color to the x/y coordinates in the canvas.
-func (c *Canvas) WritePixel(x, y int, color rtc_color.Color) {
+func (c *Canvas) WritePixel(x, y int, color Color) {
 	c.Pixels[y][x] = color
 }
 
 // PixelAt returns the pixel color at the given canvas coordinates.
-func (c *Canvas) PixelAt(x, y int) rtc_color.Color {
+func (c *Canvas) PixelAt(x, y int) Color {
 	return c.Pixels[y][x]
 }
 
 // NewCanvas initialize a new canvas with every pixel set with a black color.
 func NewCanvas(w, h int) *Canvas {
-	black := rtc_color.Color{R: 0, G: 0, B: 0}
+	black := Color{R: 0, G: 0, B: 0}
 
-	p := make([][]rtc_color.Color, h)
+	p := make([][]Color, h)
 	for x := 0; x < h; x++ {
-		p[x] = make([]rtc_color.Color, w)
+		p[x] = make([]Color, w)
 	}
 
 	for y := 0; y < h; y++ {
@@ -71,7 +69,7 @@ func Export(c *Canvas, path string) {
 	}
 }
 
-func scaleColor(c rtc_color.Color) color.Color {
+func scaleColor(c Color) color.Color {
 	return color.RGBA{
 		R: scaleComponent(c.R),
 		G: scaleComponent(c.G),

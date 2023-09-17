@@ -1,12 +1,6 @@
 package main
 
-import (
-	"github.com/adriffaud/ray-tracer-challenge/pkg/canvas"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/color"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/component"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/primitives"
-	"github.com/adriffaud/ray-tracer-challenge/pkg/shape"
-)
+import "github.com/adriffaud/ray-tracer-challenge/internal"
 
 const (
 	CANVAS_PIXELS = 100.0
@@ -17,30 +11,30 @@ const (
 )
 
 func main() {
-	rayOrigin := primitives.Point{Z: -5}
+	rayOrigin := internal.Point{Z: -5}
 
-	c := canvas.NewCanvas(CANVAS_PIXELS, CANVAS_PIXELS)
-	shape := shape.Sphere()
-	shape.Material = primitives.NewMaterial()
-	shape.Material.Color = color.Color{R: 1, G: 0.2, B: 1}
+	c := internal.NewCanvas(CANVAS_PIXELS, CANVAS_PIXELS)
+	shape := internal.Sphere()
+	shape.Material = internal.NewMaterial()
+	shape.Material.Color = internal.Color{R: 1, G: 0.2, B: 1}
 
-	light := component.Light{
-		Position:  primitives.Point{X: -10, Y: 10, Z: -10},
-		Intensity: color.Color{R: 1, G: 1, B: 1},
+	light := internal.Light{
+		Position:  internal.Point{X: -10, Y: 10, Z: -10},
+		Intensity: internal.Color{R: 1, G: 1, B: 1},
 	}
 
 	for y := 0; y < CANVAS_PIXELS; y++ {
 		worldY := HALF - PIXEL_SIZE*float64(y)
 		for x := 0; x < CANVAS_PIXELS; x++ {
 			worldX := -HALF + PIXEL_SIZE*float64(x)
-			position := primitives.Point{
+			position := internal.Point{
 				X: worldX,
 				Y: worldY,
 				Z: WALL_Z,
 			}
 			direction := position.SubPoint(rayOrigin).Normalize()
 
-			r := primitives.Ray{Origin: rayOrigin, Direction: direction}
+			r := internal.Ray{Origin: rayOrigin, Direction: direction}
 			xs := shape.Intersect(r)
 			i, hit := xs.Hit()
 
@@ -48,12 +42,12 @@ func main() {
 				p := r.Position(i.Distance)
 				normal := i.Object.NormalAt(p)
 				eye := r.Direction.Negate()
-				col := component.Lighting(i.Object.Material, light, p, eye, normal)
+				col := internal.Lighting(i.Object.Material, light, p, eye, normal)
 
 				c.WritePixel(x, y, col)
 			}
 		}
 	}
 
-	canvas.Export(c, "sphere.png")
+	internal.Export(c, "sphere.png")
 }

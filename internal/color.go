@@ -1,4 +1,4 @@
-package color
+package internal
 
 type Color struct {
 	R float64

@@ -1,21 +1,19 @@
-package primitives
+package internal
 
 import (
 	"math"
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
-func assertEquals(t *testing.T, expected, actual Point) {
-	if !float.ApproxEq(expected.X, actual.X) {
+func assertPointEquals(t *testing.T, expected, actual Point) {
+	if !ApproxEq(expected.X, actual.X) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
-	if !float.ApproxEq(expected.Y, actual.Y) {
+	if !ApproxEq(expected.Y, actual.Y) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
-	if !float.ApproxEq(expected.Z, actual.Z) {
+	if !ApproxEq(expected.Z, actual.Z) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
@@ -119,7 +117,7 @@ func TestMatrixRotation(t *testing.T) {
 
 	for _, test := range tests {
 		actual := test.origin.MultiplyMatrix(test.transform)
-		assertEquals(t, test.expected, actual)
+		assertPointEquals(t, test.expected, actual)
 	}
 }
 
@@ -132,7 +130,7 @@ func TestInverseMatrixXRotation(t *testing.T) {
 	}
 	expectedHalf := Point{X: 0, Y: math.Sqrt(2) / 2, Z: -math.Sqrt(2) / 2}
 	actualHalf := p.MultiplyMatrix(inv)
-	assertEquals(t, expectedHalf, actualHalf)
+	assertPointEquals(t, expectedHalf, actualHalf)
 }
 
 func TestShearing(t *testing.T) {
@@ -150,7 +148,7 @@ func TestShearing(t *testing.T) {
 
 	for _, test := range tests {
 		actual := test.origin.MultiplyMatrix(test.transform)
-		assertEquals(t, test.expected, actual)
+		assertPointEquals(t, test.expected, actual)
 	}
 }
 
@@ -162,15 +160,15 @@ func TestTransformationSequence(t *testing.T) {
 
 	expected := Point{X: 1, Y: -1, Z: 0}
 	p2 := p.MultiplyMatrix(a)
-	assertEquals(t, expected, p2)
+	assertPointEquals(t, expected, p2)
 
 	expected = Point{X: 5, Y: -5, Z: 0}
 	p3 := p2.MultiplyMatrix(b)
-	assertEquals(t, expected, p3)
+	assertPointEquals(t, expected, p3)
 
 	expected = Point{X: 15, Y: 0, Z: 7}
 	p4 := p3.MultiplyMatrix(c)
-	assertEquals(t, expected, p4)
+	assertPointEquals(t, expected, p4)
 }
 
 func TestChainedTransformations(t *testing.T) {
@@ -182,5 +180,5 @@ func TestChainedTransformations(t *testing.T) {
 	transform := c.Multiply(b.Multiply(a))
 	expected := Point{X: 15, Y: 0, Z: 7}
 	actual := p.MultiplyMatrix(transform)
-	assertEquals(t, expected, actual)
+	assertPointEquals(t, expected, actual)
 }

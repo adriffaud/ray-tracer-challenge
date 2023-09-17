@@ -1,4 +1,4 @@
-package primitives
+package internal
 
 // Point is a struct representing a 3D point
 type Point struct{ X, Y, Z float64 }

@@ -1,21 +1,19 @@
-package color
+package internal
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
-func assertEquals(t *testing.T, c1, c2 Color) {
-	if !float.ApproxEq(c1.R, c2.R) {
-		t.Fatalf("expected %+v. got=%+v", c1, c2)
+func assertColorEquals(t *testing.T, expected, actual Color) {
+	if !ApproxEq(expected.R, actual.R) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
-	if !float.ApproxEq(c1.G, c2.G) {
-		t.Fatalf("expected %+v. got=%+v", c1, c2)
+	if !ApproxEq(expected.G, actual.G) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
-	if !float.ApproxEq(c1.B, c2.B) {
-		t.Fatalf("expected %+v. got=%+v", c1, c2)
+	if !ApproxEq(expected.B, actual.B) {
+		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}
 }
 
@@ -52,7 +50,7 @@ func TestColorSubtraction(t *testing.T) {
 	expected := Color{0.2, 0.5, 0.5}
 
 	actual := c1.Sub(c2)
-	assertEquals(t, actual, expected)
+	assertColorEquals(t, actual, expected)
 }
 
 func TestColorScalarMultiplication(t *testing.T) {
@@ -60,7 +58,7 @@ func TestColorScalarMultiplication(t *testing.T) {
 	expected := Color{R: 0.4, G: 0.6, B: 0.8}
 
 	actual := c.MultiplyScalar(2)
-	assertEquals(t, actual, expected)
+	assertColorEquals(t, actual, expected)
 }
 
 func TestColorMultiplication(t *testing.T) {
@@ -69,5 +67,5 @@ func TestColorMultiplication(t *testing.T) {
 	expected := Color{R: 0.9, G: 0.2, B: 0.04}
 
 	actual := c1.Multiply(c2)
-	assertEquals(t, actual, expected)
+	assertColorEquals(t, actual, expected)
 }

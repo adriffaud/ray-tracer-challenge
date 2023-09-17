@@ -1,11 +1,9 @@
-package primitives
+package internal
 
 import (
 	"math"
 	"reflect"
 	"testing"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
 )
 
 func TestTupleAddition(t *testing.T) {
@@ -233,15 +231,6 @@ func TestVectorReflection(t *testing.T) {
 
 	for _, test := range tests {
 		r := test.in.Reflect(test.n)
-
-		if !float.ApproxEq(test.expected.X, r.X) {
-			t.Fatalf("expected %+v. got=%+v", test.expected.X, r.X)
-		}
-		if !float.ApproxEq(test.expected.Y, r.Y) {
-			t.Fatalf("expected %+v. got=%+v", test.expected.Y, r.Y)
-		}
-		if !float.ApproxEq(test.expected.Z, r.Z) {
-			t.Fatalf("expected %+v. got=%+v", test.expected.Z, r.Z)
-		}
+		assertVectorEquals(t, test.expected, r)
 	}
 }

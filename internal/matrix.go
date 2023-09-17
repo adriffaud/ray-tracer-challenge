@@ -1,10 +1,6 @@
-package primitives
+package internal
 
-import (
-	"errors"
-
-	"github.com/adriffaud/ray-tracer-challenge/pkg/float"
-)
+import "errors"
 
 type Matrix [][]float64
 
@@ -131,7 +127,7 @@ func Eq(a, b Matrix) bool {
 
 	for row := 0; row < len(a); row++ {
 		for col := 0; col < len(a); col++ {
-			if !float.ApproxEq(a[row][col], b[row][col]) {
+			if !ApproxEq(a[row][col], b[row][col]) {
 				return false
 			}
 		}
