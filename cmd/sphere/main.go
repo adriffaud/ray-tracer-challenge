@@ -42,7 +42,7 @@ func main() {
 				p := r.Position(i.Distance)
 				normal := i.Object.NormalAt(p)
 				eye := r.Direction.Negate()
-				col := internal.Lighting(i.Object.Material, light, p, eye, normal)
+				col := internal.Lighting(i.Object.Material, light, p, eye, normal, false)
 
 				c.WritePixel(x, y, col)
 			}

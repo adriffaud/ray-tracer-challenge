@@ -34,7 +34,7 @@ func (w World) Intersect(r Ray) Intersections {
 }
 
 func (w World) ShadeHit(comps Computations, light Light) Color {
-	return Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV)
+	return Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV, false)
 }
 
 func (w World) ColorAt(r Ray) Color {

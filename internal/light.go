@@ -7,7 +7,7 @@ type Light struct {
 	Position  Point
 }
 
-func Lighting(m Material, l Light, p Point, eye, normal Vector) Color {
+func Lighting(m Material, l Light, p Point, eye, normal Vector, inShadow bool) Color {
 	effective := m.Color.Multiply(l.Intensity)
 	lightv := l.Position.SubPoint(p).Normalize()
 	ambient := effective.MultiplyScalar(m.Ambient)
@@ -24,6 +24,10 @@ func Lighting(m Material, l Light, p Point, eye, normal Vector) Color {
 			factor := math.Pow(reflectDotEye, m.Shininess)
 			specular = l.Intensity.MultiplyScalar(m.Specular * factor)
 		}
+	}
+
+	if inShadow {
+		return ambient
 	}
 
 	return ambient.Add(diffuse).Add(specular)
