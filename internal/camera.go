@@ -11,7 +11,7 @@ type Camera struct {
 }
 
 func NewCamera(width, height int, fieldOfView float64) Camera {
-	halfView := math.Tan(fieldOfView / 2)
+	halfView := math.Tan(fieldOfView / 2.0)
 	aspect := float64(width) / float64(height)
 
 	c := Camera{

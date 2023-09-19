@@ -2,9 +2,8 @@ package internal
 
 import (
 	"reflect"
-	"testing"
-
 	"slices"
+	"testing"
 )
 
 func TestDefaultWorld(t *testing.T) {
@@ -23,8 +22,8 @@ func TestDefaultWorld(t *testing.T) {
 
 	w := NewWorld()
 
-	if !reflect.DeepEqual(w.Light, light) {
-		t.Fatalf("expected %+v. got=%+v", light, w.Light)
+	if !reflect.DeepEqual(w.Lights[0], light) {
+		t.Fatalf("expected %+v. got=%+v", light, w.Lights[0])
 	}
 
 	if !slices.ContainsFunc(w.Objects, func(s Shape) bool {
@@ -54,6 +53,15 @@ func TestWorldIntersect(t *testing.T) {
 	if xs[0].Distance != 4 {
 		t.Fail()
 	}
+	if xs[1].Distance != 4.5 {
+		t.Fail()
+	}
+	if xs[2].Distance != 5.5 {
+		t.Fail()
+	}
+	if xs[3].Distance != 6 {
+		t.Fail()
+	}
 }
 
 func TestIntersectionShading(t *testing.T) {
@@ -65,17 +73,17 @@ func TestIntersectionShading(t *testing.T) {
 	s := w.Objects[0]
 	i := Intersection{Object: s, Distance: 4}
 	comps := i.PrepareComputations(r)
-	c := w.ShadeHit(comps)
+	c := w.ShadeHit(comps, w.Lights[0])
 	expected := Color{R: 0.38066, G: 0.47583, B: 0.2855}
 	assertColorEquals(t, expected, c)
 }
 
 func TestInsideIntersectionShading(t *testing.T) {
 	w := NewWorld()
-	w.Light = Light{
+	w.Lights = []Light{{
 		Position:  Point{Y: 0.25},
 		Intensity: Color{R: 1, G: 1, B: 1},
-	}
+	}}
 	r := Ray{
 		Origin:    Point{},
 		Direction: Vector{Z: 1},
@@ -83,7 +91,7 @@ func TestInsideIntersectionShading(t *testing.T) {
 	s := w.Objects[1]
 	i := Intersection{Object: s, Distance: 0.5}
 	comps := i.PrepareComputations(r)
-	c := w.ShadeHit(comps)
+	c := w.ShadeHit(comps, w.Lights[0])
 	expected := Color{R: 0.90498, G: 0.90498, B: 0.90498}
 
 	assertColorEquals(t, expected, c)

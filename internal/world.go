@@ -4,7 +4,7 @@ import "sort"
 
 type World struct {
 	Objects []Shape
-	Light   Light
+	Lights  []Light
 }
 
 func NewWorld() World {
@@ -21,7 +21,7 @@ func NewWorld() World {
 	s2 := Sphere()
 	s2.Transform = Scaling(0.5, 0.5, 0.5)
 
-	return World{Light: light, Objects: []Shape{s1, s2}}
+	return World{Lights: []Light{light}, Objects: []Shape{s1, s2}}
 }
 
 func (w World) Intersect(r Ray) Intersections {
@@ -30,20 +30,25 @@ func (w World) Intersect(r Ray) Intersections {
 		i = append(i, o.Intersect(r)...)
 	}
 	sort.Sort(i)
-
 	return i
 }
 
-func (w World) ShadeHit(comps Computations) Color {
-	return Lighting(comps.Object.Material, w.Light, comps.Point, comps.EyeV, comps.NormalV)
+func (w World) ShadeHit(comps Computations, light Light) Color {
+	return Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV)
 }
 
 func (w World) ColorAt(r Ray) Color {
-	xs := w.Intersect(r)
-	i, hit := xs.Hit()
+	result := Color{}
+	intersections := w.Intersect(r)
+	intersection, hit := intersections.Hit()
 	if !hit {
-		return Color{}
+		return result
 	}
-	comps := i.PrepareComputations(r)
-	return w.ShadeHit(comps)
+
+	comps := intersection.PrepareComputations(r)
+	for _, light := range w.Lights {
+		result = result.Add(w.ShadeHit(comps, light))
+	}
+
+	return result
 }

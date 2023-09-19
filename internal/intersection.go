@@ -4,10 +4,9 @@ import "sort"
 
 type Computations struct {
 	Intersection
-	Inside  bool
-	Point   Point
-	EyeV    Vector
-	NormalV Vector
+	Inside        bool
+	Point         Point
+	EyeV, NormalV Vector
 }
 
 type Intersection struct {
@@ -24,7 +23,7 @@ func (i Intersection) PrepareComputations(r Ray) Computations {
 		Intersection: i,
 		Point:        p,
 		EyeV:         r.Direction.Negate(),
-		NormalV:      Sphere().NormalAt(p),
+		NormalV:      i.Object.NormalAt(p),
 	}
 
 	if comps.NormalV.Dot(comps.EyeV) < 0 {

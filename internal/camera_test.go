@@ -27,8 +27,8 @@ func TestCameraPixelSize(t *testing.T) {
 		camera   Camera
 		expected float64
 	}{
-		{NewCamera(200, 129, math.Pi/2), 0.01},
-		{NewCamera(129, 200, math.Pi/2), 0.01},
+		{NewCamera(200, 125, math.Pi/2), 0.01},
+		{NewCamera(125, 200, math.Pi/2), 0.01},
 	}
 
 	for _, test := range tests {
