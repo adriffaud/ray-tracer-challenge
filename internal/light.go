@@ -15,6 +15,10 @@ func Lighting(m Material, l Light, p Point, eye, normal Vector, inShadow bool) C
 
 	var diffuse, specular Color
 
+	if inShadow {
+		return ambient
+	}
+
 	if lightDotNormal >= 0 {
 		diffuse = effective.MultiplyScalar(m.Diffuse * lightDotNormal)
 		reflect := lightv.Negate().Reflect(normal)
@@ -24,10 +28,6 @@ func Lighting(m Material, l Light, p Point, eye, normal Vector, inShadow bool) C
 			factor := math.Pow(reflectDotEye, m.Shininess)
 			specular = l.Intensity.MultiplyScalar(m.Specular * factor)
 		}
-	}
-
-	if inShadow {
-		return ambient
 	}
 
 	return ambient.Add(diffuse).Add(specular)

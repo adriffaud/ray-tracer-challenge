@@ -148,3 +148,18 @@ func TestHitInsideIntersection(t *testing.T) {
 		t.Fatalf("expected %+v. got=%+v", n, comps.NormalV)
 	}
 }
+
+func TestHitPointOffset(t *testing.T) {
+	r := Ray{Origin: Point{Z: -5}, Direction: Vector{Z: 1}}
+	shape := Sphere()
+	shape.Transform = Translation(0, 0, 1)
+	i := Intersection{shape, 5}
+	comps := i.PrepareComputations(r)
+
+	if comps.OverPoint.Z >= -EPSILON/2 {
+		t.Fatalf("expected %f. got=%f", -EPSILON/2, comps.OverPoint.Z)
+	}
+	if comps.Point.Z < comps.OverPoint.Z {
+		t.Fatalf("expected %f. got=%f", comps.OverPoint.Z, comps.Point.Z)
+	}
+}

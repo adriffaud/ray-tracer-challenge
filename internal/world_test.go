@@ -141,3 +141,41 @@ func TestBehindRayIntersectionColor(t *testing.T) {
 
 	assertColorEquals(t, inner.Material.Color, c)
 }
+
+func TestShadow(t *testing.T) {
+	w := NewWorld()
+
+	tests := []struct {
+		p          Point
+		isShadowed bool
+	}{
+		{Point{Y: 10}, false},
+		{Point{X: 10, Y: -10, Z: 10}, true},
+		{Point{X: -20, Y: 20, Z: -20}, false},
+		{Point{X: -2, Y: 2, Z: -2}, false},
+	}
+
+	for _, test := range tests {
+		actual := w.IsShadowed(test.p)
+
+		if actual != test.isShadowed {
+			t.Fatalf("expected %t. got=%t", test.isShadowed, actual)
+		}
+	}
+}
+
+func TestShadowIntersection(t *testing.T) {
+	s2 := Sphere()
+	s2.Transform = Translation(0, 0, 10)
+	w := World{
+		Lights:  []Light{{Position: Point{Z: -10}, Intensity: Color{R: 1, G: 1, B: 1}}},
+		Objects: []Shape{Sphere(), s2},
+	}
+	r := Ray{Origin: Point{Z: 5}, Direction: Vector{Z: 1}}
+	i := Intersection{s2, 4}
+	comps := i.PrepareComputations(r)
+	c := w.ShadeHit(comps, w.Lights[0])
+	expected := Color{R: 0.1, G: 0.1, B: 0.1}
+
+	assertColorEquals(t, expected, c)
+}

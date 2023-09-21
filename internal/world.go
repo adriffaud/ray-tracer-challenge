@@ -1,6 +1,8 @@
 package internal
 
-import "sort"
+import (
+	"sort"
+)
 
 type World struct {
 	Objects []Shape
@@ -34,7 +36,9 @@ func (w World) Intersect(r Ray) Intersections {
 }
 
 func (w World) ShadeHit(comps Computations, light Light) Color {
-	return Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV, false)
+	shadowed := w.IsShadowed(comps.OverPoint)
+
+	return Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV, shadowed)
 }
 
 func (w World) ColorAt(r Ray) Color {
@@ -51,4 +55,19 @@ func (w World) ColorAt(r Ray) Color {
 	}
 
 	return result
+}
+
+func (w World) IsShadowed(p Point) bool {
+	v := w.Lights[0].Position.SubPoint(p)
+	distance := v.Magnitude()
+	direction := v.Normalize()
+	r := Ray{Origin: p, Direction: direction}
+	intersections := w.Intersect(r)
+	intersection, hit := intersections.Hit()
+
+	if hit && intersection.Distance < distance {
+		return true
+	}
+
+	return false
 }
