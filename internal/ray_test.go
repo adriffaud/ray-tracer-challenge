@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -10,12 +9,8 @@ func TestRayCreation(t *testing.T) {
 	direction := Vector{X: 4, Y: 5, Z: 6}
 	r := Ray{Origin: origin, Direction: direction}
 
-	if r.Origin != origin {
-		t.Fatalf("expected origin to be %+v. got=%+v", origin, r.Origin)
-	}
-	if r.Direction != direction {
-		t.Fatalf("expected origin to be %+v. got=%+v", direction, r.Direction)
-	}
+	assertEqual(t, origin, r.Origin)
+	assertEqual(t, direction, r.Direction)
 }
 
 func TestComputingPointFromDistance(t *testing.T) {
@@ -34,9 +29,7 @@ func TestComputingPointFromDistance(t *testing.T) {
 	for time, expected := range tests {
 		actual := r.Position(time)
 
-		if !reflect.DeepEqual(actual, expected) {
-			t.Fatalf("expected %+v. got=%+v", expected, actual)
-		}
+		assertDeepEqual(t, expected, actual)
 	}
 }
 
@@ -49,12 +42,8 @@ func TestRayTranslation(t *testing.T) {
 	r2 := r.Transform(m)
 	expected_origin := Point{X: 4, Y: 6, Z: 8}
 
-	if !reflect.DeepEqual(r2.Origin, expected_origin) {
-		t.Fatalf("expected %+v. got=%+v", expected_origin, r2.Origin)
-	}
-	if !reflect.DeepEqual(r2.Direction, r.Direction) {
-		t.Fatalf("expected %+v. got=%+v", r.Direction, r2.Direction)
-	}
+	assertDeepEqual(t, r2.Origin, expected_origin)
+	assertDeepEqual(t, r2.Direction, r.Direction)
 }
 
 func TestRayScaling(t *testing.T) {
@@ -67,10 +56,6 @@ func TestRayScaling(t *testing.T) {
 	expected_origin := Point{X: 2, Y: 6, Z: 12}
 	expected_direction := Vector{Y: 3}
 
-	if !reflect.DeepEqual(r2.Origin, expected_origin) {
-		t.Fatalf("expected %+v. got=%+v", expected_origin, r2.Origin)
-	}
-	if !reflect.DeepEqual(r2.Direction, expected_direction) {
-		t.Fatalf("expected %+v. got=%+v", expected_direction, r2.Direction)
-	}
+	assertDeepEqual(t, r2.Origin, expected_origin)
+	assertDeepEqual(t, r2.Direction, expected_direction)
 }

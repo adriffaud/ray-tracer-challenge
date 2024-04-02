@@ -22,9 +22,7 @@ func TestDefaultWorld(t *testing.T) {
 
 	w := NewWorld()
 
-	if !reflect.DeepEqual(w.Lights[0], light) {
-		t.Fatalf("expected %+v. got=%+v", light, w.Lights[0])
-	}
+	assertDeepEqual(t, w.Lights[0], light)
 
 	if !slices.ContainsFunc(w.Objects, func(s Shape) bool {
 		return reflect.DeepEqual(s, s1)

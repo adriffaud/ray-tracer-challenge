@@ -39,9 +39,7 @@ func TestColorAddition(t *testing.T) {
 	expected := Color{1.6, 0.7, 1.0}
 
 	actual := c1.Add(c2)
-	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("expected %+v. got=%+v", actual, expected)
-	}
+	assertDeepEqual(t, actual, expected)
 }
 
 func TestColorSubtraction(t *testing.T) {
