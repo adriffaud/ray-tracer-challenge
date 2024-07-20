@@ -4,6 +4,7 @@ import "testing"
 
 func assertColorEquals(t *testing.T, expected, actual Color) {
 	t.Helper()
+
 	if !ApproxEq(expected.R, actual.R) {
 		t.Fatalf("expected %+v. got=%+v", expected, actual)
 	}

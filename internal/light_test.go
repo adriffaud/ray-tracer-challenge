@@ -33,61 +33,43 @@ func TestLighting(t *testing.T) {
 		{
 			Vector{Z: -1},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Z: -10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 1.9, G: 1.9, B: 1.9},
+			Light{Color{1, 1, 1}, Point{Z: -10}},
+			Color{1.9, 1.9, 1.9},
 			false,
 		},
 		{
 			Vector{Y: math.Sqrt(2) / 2, Z: -math.Sqrt(2) / 2},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Z: -10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 1, G: 1, B: 1},
+			Light{Color{1, 1, 1}, Point{Z: -10}},
+			Color{1, 1, 1},
 			false,
 		},
 		{
 			Vector{Z: -1},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Y: 10, Z: -10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 0.7364, G: 0.7364, B: 0.7364},
+			Light{Color{1, 1, 1}, Point{Y: 10, Z: -10}},
+			Color{0.7364, 0.7364, 0.7364},
 			false,
 		},
 		{
 			Vector{Y: -math.Sqrt(2) / 2, Z: -math.Sqrt(2) / 2},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Y: 10, Z: -10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 1.6364, G: 1.6364, B: 1.6364},
+			Light{Color{1, 1, 1}, Point{Y: 10, Z: -10}},
+			Color{1.6364, 1.6364, 1.6364},
 			false,
 		},
 		{
 			Vector{Z: -1},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Z: 10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 0.1, G: 0.1, B: 0.1},
+			Light{Color{1, 1, 1}, Point{Z: 10}},
+			Color{0.1, 0.1, 0.1},
 			false,
 		},
 		{
 			Vector{Z: -1},
 			Vector{Z: -1},
-			Light{
-				Position:  Point{Z: -10},
-				Intensity: Color{R: 1, G: 1, B: 1},
-			},
-			Color{R: 0.1, G: 0.1, B: 0.1},
+			Light{Color{1, 1, 1}, Point{Z: -10}},
+			Color{0.1, 0.1, 0.1},
 			true,
 		},
 	}

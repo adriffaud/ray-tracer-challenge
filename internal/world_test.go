@@ -7,10 +7,7 @@ import (
 )
 
 func TestDefaultWorld(t *testing.T) {
-	light := Light{
-		Position:  Point{X: -10, Y: 10, Z: -10},
-		Intensity: Color{R: 1, G: 1, B: 1},
-	}
+	light := Light{Color{1, 1, 1}, Point{-10, 10, -10}}
 
 	s1 := Sphere()
 	s1.Material.Color = Color{R: 0.8, G: 1, B: 0.6}
@@ -39,10 +36,7 @@ func TestDefaultWorld(t *testing.T) {
 
 func TestWorldIntersect(t *testing.T) {
 	w := NewWorld()
-	r := Ray{
-		Origin:    Point{Z: -5},
-		Direction: Vector{Z: 1},
-	}
+	r := Ray{Point{Z: -5}, Vector{Z: 1}}
 	xs := w.Intersect(r)
 
 	if len(xs) != 4 {
@@ -64,34 +58,24 @@ func TestWorldIntersect(t *testing.T) {
 
 func TestIntersectionShading(t *testing.T) {
 	w := NewWorld()
-	r := Ray{
-		Origin:    Point{Z: -5},
-		Direction: Vector{Z: 1},
-	}
+	r := Ray{Point{Z: -5}, Vector{Z: 1}}
 	s := w.Objects[0]
-	i := Intersection{Object: s, Distance: 4}
+	i := Intersection{s, 4}
 	comps := i.PrepareComputations(r)
 	c := w.ShadeHit(comps, w.Lights[0])
-	expected := Color{R: 0.38066, G: 0.47583, B: 0.2855}
+	expected := Color{0.38066, 0.47583, 0.2855}
 	assertColorEquals(t, expected, c)
 }
 
 func TestInsideIntersectionShading(t *testing.T) {
 	w := NewWorld()
-	w.Lights = []Light{{
-		Position:  Point{Y: 0.25},
-		Intensity: Color{R: 1, G: 1, B: 1},
-	}}
-	r := Ray{
-		Origin:    Point{},
-		Direction: Vector{Z: 1},
-	}
+	w.Lights = []Light{{Color{R: 1, G: 1, B: 1}, Point{Y: 0.25}}}
+	r := Ray{Point{}, Vector{Z: 1}}
 	s := w.Objects[1]
-	i := Intersection{Object: s, Distance: 0.5}
+	i := Intersection{s, 0.5}
 	comps := i.PrepareComputations(r)
 	c := w.ShadeHit(comps, w.Lights[0])
-	expected := Color{R: 0.90498, G: 0.90498, B: 0.90498}
-
+	expected := Color{0.90498, 0.90498, 0.90498}
 	assertColorEquals(t, expected, c)
 }
 
@@ -101,22 +85,8 @@ func TestColors(t *testing.T) {
 		r        Ray
 		expected Color
 	}{
-		{
-			NewWorld(),
-			Ray{
-				Origin:    Point{Z: -5},
-				Direction: Vector{Y: 1},
-			},
-			Color{},
-		},
-		{
-			NewWorld(),
-			Ray{
-				Origin:    Point{Z: -5},
-				Direction: Vector{Z: 1},
-			},
-			Color{R: 0.38066, G: 0.47583, B: 0.2855},
-		},
+		{NewWorld(), Ray{Point{Z: -5}, Vector{Y: 1}}, Color{}},
+		{NewWorld(), Ray{Point{Z: -5}, Vector{Z: 1}}, Color{0.38066, 0.47583, 0.2855}},
 	}
 
 	for _, test := range tests {
@@ -129,14 +99,9 @@ func TestBehindRayIntersectionColor(t *testing.T) {
 	w := NewWorld()
 	w.Objects[0].Material.Ambient = 1
 	w.Objects[1].Material.Ambient = 1
-	r := Ray{
-		Origin:    Point{Z: 0.75},
-		Direction: Vector{Z: -1},
-	}
+	r := Ray{Point{Z: 0.75}, Vector{Z: -1}}
 	c := w.ColorAt(r)
-
 	inner := w.Objects[1]
-
 	assertColorEquals(t, inner.Material.Color, c)
 }
 
@@ -148,9 +113,9 @@ func TestShadow(t *testing.T) {
 		isShadowed bool
 	}{
 		{Point{Y: 10}, false},
-		{Point{X: 10, Y: -10, Z: 10}, true},
-		{Point{X: -20, Y: 20, Z: -20}, false},
-		{Point{X: -2, Y: 2, Z: -2}, false},
+		{Point{10, -10, 10}, true},
+		{Point{-20, 20, -20}, false},
+		{Point{-2, 2, -2}, false},
 	}
 
 	for _, test := range tests {
@@ -163,17 +128,21 @@ func TestShadow(t *testing.T) {
 }
 
 func TestShadowIntersection(t *testing.T) {
+	w := World{
+		[]Shape{Sphere()},
+		[]Light{{Color{1, 1, 1}, Point{Z: -10}}},
+	}
+
 	s2 := Sphere()
 	s2.Transform = Translation(0, 0, 10)
-	w := World{
-		Lights:  []Light{{Position: Point{Z: -10}, Intensity: Color{R: 1, G: 1, B: 1}}},
-		Objects: []Shape{Sphere(), s2},
-	}
-	r := Ray{Origin: Point{Z: 5}, Direction: Vector{Z: 1}}
+
+	w.Objects = append(w.Objects, s2)
+
+	r := Ray{Point{Z: 5}, Vector{Z: 1}}
 	i := Intersection{s2, 4}
 	comps := i.PrepareComputations(r)
 	c := w.ShadeHit(comps, w.Lights[0])
-	expected := Color{R: 0.1, G: 0.1, B: 0.1}
+	expected := Color{0.1, 0.1, 0.1}
 
 	assertColorEquals(t, expected, c)
 }
