@@ -156,8 +156,8 @@ func TestHitPointOffset(t *testing.T) {
 	i := Intersection{shape, 5}
 	comps := i.PrepareComputations(r)
 
-	if comps.OverPoint.Z >= -EPSILON/2 {
-		t.Fatalf("expected %f. got=%f", -EPSILON/2, comps.OverPoint.Z)
+	if comps.OverPoint.Z >= -Epsilon/2 {
+		t.Fatalf("expected %f. got=%f", -Epsilon/2, comps.OverPoint.Z)
 	}
 	if comps.Point.Z < comps.OverPoint.Z {
 		t.Fatalf("expected %f. got=%f", comps.OverPoint.Z, comps.Point.Z)

@@ -26,7 +26,7 @@ func (i Intersection) PrepareComputations(r Ray) Computations {
 		NormalV:      i.Object.NormalAt(p),
 	}
 
-	comps.OverPoint = comps.Point.Add(comps.NormalV.Multiply(EPSILON))
+	comps.OverPoint = comps.Point.Add(comps.NormalV.Multiply(Epsilon))
 
 	if comps.NormalV.Dot(comps.EyeV) < 0 {
 		comps.Inside = true
